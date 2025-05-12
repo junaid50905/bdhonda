@@ -6,6 +6,8 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\EventInterface;
+use Cake\Http\Exception\NotFoundException;
+
 
 
 
@@ -268,10 +270,118 @@ class SafetiesController extends AppController
 
         $this->set(compact('activity_picture'));
     }
-    public function editActivityPicture($id)
+    // public function editActivityPicture($id = null)
+    // {
+    //     $this->viewBuilder()->setLayout('admin_layout');
+    //     $this->set('page_title', 'Edit Activity Picture');
+
+    //     $activity_picture = $this->Safety->get($id);
+
+    //     if ($this->request->is(['post', 'put', 'patch'])) {
+    //         $file = $this->request->getData('image');
+    //         $data = $this->request->getData();
+
+    //         // Remove file from patchEntity
+    //         unset($data['image']);
+
+    //         $activity_picture = $this->Safety->patchEntity($activity_picture, $data);
+
+    //         $activity_picture->modified = date('Y-m-d H:i:s');
+
+    //         // Handle file upload if a new file is uploaded
+    //         if ($file && $file->getError() === UPLOAD_ERR_OK) {
+    //             // Delete old file
+    //             if (!empty($activity_picture->image)) {
+    //                 $oldPath = WWW_ROOT . 'assets/public/images/safeties/activity_picture/' . $activity_picture->image;
+    //                 if (file_exists($oldPath)) {
+    //                     unlink($oldPath);
+    //                 }
+    //             }
+
+    //             // Save new file
+    //             $fileName = uniqid() . '_' . $file->getClientFilename();
+    //             $uploadPath = WWW_ROOT . 'assets/public/images/safeties/activity_picture';
+    //             if (!is_dir($uploadPath)) {
+    //                 mkdir($uploadPath, 0777, true);
+    //             }
+    //             $targetPath = $uploadPath . DS . $fileName;
+    //             $file->moveTo($targetPath);
+
+    //             $activity_picture->image = $fileName;
+    //         }
+
+    //         if ($this->Safety->save($activity_picture)) {
+    //             $this->Flash->success(__('The activity picture has been updated.'));
+    //             return $this->redirect(['action' => 'allList']);
+    //         }
+
+    //         $this->Flash->error(__('Unable to update the activity picture.'));
+    //     }
+
+    //     $this->set(compact('activity_picture'));
+    // }
+    public function editActivityPicture($id = null)
     {
-        echo $id;
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit activity picture');
+
+        $activity_picture = $this->Safety->get($id);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $data = $this->request->getData();
+            $file = $data['image'] ?? null;
+            unset($data['image']);
+
+            // Patch other fields
+            $activity_picture = $this->Safety->patchEntity($activity_picture, $data);
+            $activity_picture->name = $data['title'] ?? $activity_picture->name;
+            $activity_picture->modified = date('Y-m-d H:i:s');
+
+            // Handle image upload if new file is provided
+            if ($file && $file->getError() === UPLOAD_ERR_OK) {
+                $uploadPath = WWW_ROOT . 'assets/public/images/safeties/activity_picture';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                // Delete old image if exists
+                if (!empty($activity_picture->image) && file_exists($uploadPath . DS . $activity_picture->image)) {
+                    unlink($uploadPath . DS . $activity_picture->image);
+                }
+
+                $fileName = uniqid() . '_' . $file->getClientFilename();
+                $file->moveTo($uploadPath . DS . $fileName);
+                $activity_picture->image = $fileName;
+            }
+
+            if ($this->Safety->save($activity_picture)) {
+                $this->Flash->success(__('The activity picture has been updated.'));
+                return $this->redirect(['action' => 'allList']);
+            }
+
+            $this->Flash->error(__('Unable to update the activity picture.'));
+        }
+
+        $this->set(compact('activity_picture'));
     }
+
+
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        $safety = $this->Safeties->get($id);
+
+        if ($this->Safeties->delete($safety)) {
+            $this->Flash->success(__('Safety deleted successfully!'));
+        } else {
+            $this->Flash->error(__('Safety not deleted!'));
+        }
+
+        return $this->redirect(['action' => 'allList']);
+    }
+
+
 
     public function pdsa()
     {

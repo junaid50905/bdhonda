@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Controller;
+
+use Cake\Http\Exception\NotFoundException;
+use Cake\Datasource\Exception\RecordNotFoundException;
+use Cake\Http\Client; // For HTTP requests (Recaptcha)
+use Cake\Mailer\Mailer;
+
+class UsersController extends AppController
+{
+    // public function initialize(): void
+    // {
+    //     parent::initialize();
+    //     $this->loadComponent('Flash');
+    //     // Load Authentication component if needed
+    //     $this->loadComponent('Authentication.Authentication');
+    // }
+
+    // private function __checkRecaptchaResponse($response)
+    // {
+    //     $http = new Client();
+    //     $url = 'https://www.google.com/recaptcha/api/siteverify';
+
+    //     $data = [
+    //         'secret' => env('RECAPTCHA_SECRET_KEY'), // Use environment variable for secret key
+    //         'response' => $response,
+    //         'remoteip' => $this->request->clientIp(),
+    //     ];
+
+    //     $response = $http->post($url, $data);
+    //     $result = $response->getJson();
+
+    //     return !empty($result['success']) && $result['success'];
+    // }
+
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        $this->Authentication->addUnauthenticatedActions(['login']);
+    }
+    public function login()
+    {
+        $this->viewBuilder()->setLayout('login_layout');
+
+
+        $this->request->allowMethod(['get', 'post']);
+        $result = $this->Authentication->getResult();
+        if ($result && $result->isValid()) {
+            $redirect = $this->request->getQuery('redirect', [
+                'controller' => 'Dashboards',
+                'action' => 'index',
+            ]);
+
+            return $this->redirect($redirect);
+        }
+        if ($this->request->is('post') && !$result->isValid()) {
+            $this->Flash->error(__('Invalid username or password'));
+        }
+    }
+
+    public function logout()
+    {
+        $result = $this->Authentication->getResult();
+        if ($result && $result->isValid()) {
+            $this->Authentication->logout();
+            return $this->redirect(['controller' => 'Users', 'action' => 'login']);
+        }
+    }
+
+    public function index()
+    {
+        $users = $this->paginate($this->Users);
+        $this->set(compact('users'));
+    }
+
+    public function view($id = null)
+    {
+        try {
+            $user = $this->Users->get($id);
+            $this->set(compact('user'));
+        } catch (RecordNotFoundException $e) {
+            throw new NotFoundException(__('User not found'));
+        }
+    }
+
+    public function add()
+    {
+        $user = $this->Users->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $user = $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been saved.'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please try again.'));
+        }
+        $this->set(compact('user'));
+    }
+
+    public function edit($id = null)
+    {
+        try {
+            $user = $this->Users->get($id);
+        } catch (RecordNotFoundException $e) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+
+        if ($this->request->is(['post', 'put'])) {
+            $this->Users->patchEntity($user, $this->request->getData());
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('The user has been updated.'));
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please try again.'));
+        }
+        $this->set(compact('user'));
+    }
+
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+        try {
+            $user = $this->Users->get($id);
+            if ($this->Users->delete($user)) {
+                $this->Flash->success(__('The user has been deleted.'));
+            } else {
+                $this->Flash->error(__('The user could not be deleted. Please try again.'));
+            }
+        } catch (RecordNotFoundException $e) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        return $this->redirect(['action' => 'index']);
+    }
+}

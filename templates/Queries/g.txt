@@ -1,0 +1,34 @@
+| Case        | (German) | Pronunciation | Bangla Meaning  | Possessive Pronoun (German) | German Pronunciation (Bangla) | Bangla Meaning (Possessive Pronoun) | English Meaning (Possessive Pronoun) |
+|-------------|----------|---------------|-----------------|-----------------------------|-------------------------------|-------------------------------------|-------------------------------------|
+| Nominative  | Ich      | ইশ            | আমি I            | Mein                        | মাইন                          | আমার                                | My                                  |
+| Akkusative  | Mich     | মিশ           | আমাকে          | Meinen                      | মাইনেন                        | আমার                                | My                                  |
+| Dativ       | Mir      | মিয়া           | আমাকে          | Meinem                      | মাইনেম                        | আমার                                | My                                  |
+| Genitiv     | Meiner   | মাইনার         | আমার            | -                           | -                             | -                                   | -                                   |
+| Nominative  | Du       | ডু             | তুমি            | Dein                        | ডাইন                          | তোমার                              | Your (informal)                     |
+| Akkusative  | Dich     | ডিশ            | তোমাকে          | Deinen                      | ডাইনেন                        | তোমার                              | Your (informal)                     |
+| Dativ       | Dir      | ডিয়া           | তোমাকে          | Deinem                      | ডাইনেম                        | তোমার                              | Your (informal)                     |
+| Genitiv     | Deiner   | ডাইনার         | তোমার            | -                           | -                             | -                                   | -                                   |
+| Nominative  | Er       | আ             | সে/তিনি (পুরুষ)  | Sein                        | জাইন                          | তার (পুরুষ)                         | His                                 |
+| Akkusative  | Ihn      | ইন            | তাকে (পুরুষ)    | Seinen                      | জাইনেন                        | তার (পুরুষ)                         | His                                 |
+| Dativ       | Ihm      | ইম            | তাকে (পুরুষ)    | Seinem                      | জাইনেম                        | তার (পুরুষ)                         | His                                 |
+| Genitiv     | Seiner   | জাইনার         | তার (পুরুষ)     | -                           | -                             | -                                   | -                                   |
+| Nominative  | Sie      | জি             | সে/তিনি (নারী)  | Ihr                         | ঈয়ার                          | তার (নারী)                          | Her                                 |
+| Akkusative  | Sie      | জি             | তাকে (নারী)    | Ihren                       | ঈয়ারেন                        | তার (নারী)                          | Her                                 |
+| Dativ       | Ihr      | ইয়া            | তাকে (নারী)    | Ihrem                       | ঈয়ারেম                        | তার (নারী)                          | Her                                 |
+| Genitiv     | Ihrer    | ঈয়ার           | তার (নারী)      | -                           | -                             | -                                   | -                                   |
+| Nominative  | Es       | এস             | এটি           | Sein                        | জাইন                          | তার (নিরপেক্ষ)                      | Its                                 |
+| Akkusative  | Es       | এস             | এটিকে         | Seinen                      | জাইনেন                        | তার (নিরপেক্ষ)                      | Its                                 |
+| Dativ       | Ihm      | ইম             | এটিকে         | Seinem                      | জাইনেম                        | তার (নিরপেক্ষ)                      | Its                                 |
+| Genitiv     | Seiner   | জাইনার         | এর (নিরপেক্ষ)   | -                           | -                             | -                                   | -                                   |
+| Nominative  | Wir      | ভিয়ার          | আমরা          | Unser                       | উনজার                         | আমাদের                              | Our                                 |
+| Akkusative  | Uns      | উন্স            | আমাদের         | Unseren                     | উনজারেন                       | আমাদের                              | Our                                 |
+| Dativ       | Uns      | উন্স                            | আমাদের                            | Unserem                     | উনজারেম                       | আমাদের                              | Our                                 |
+| Genitiv     | Unserer  | উনজারার        | আমাদের          | -                           | -                             | -                                   | -                                   |
+| Nominative  | Ihr      | ইয়া            | তোমরা         | Euer                        | অয়র                           | তোমাদের                             | Your (plural)                       |
+| Akkusative  | Euch     | অইচ            | তোমাদের       | Euren                       | অয়রেন                         | তোমাদের                             | Your (plural)                       |
+| Dativ       | Euch     | অইচ            | তোমাদের       | Eurem                       | অয়রেম                         | তোমাদের                             | Your (plural)                       |
+| Genitiv     | Eurer    | অইরার          | তোমাদের         | -                           | -                             | -                                   | -                                   |
+| Nominative  | Sie      | জি             | তারা/আপনি (formal singular/plural)| Ihr                         | ঈয়ার                          | তাদের/আপনার                         | Their/Your (formal)                 |
+| Akkusative  | Sie      | জি             | তাদের/আপনাদের   | Ihren                       | ঈয়ারেন                        | তাদের/আপনার                         | Their/Your (formal)                 |
+| Dativ       | Ihnen    | ইনেন          | তাদের/আপনাদের    | Ihrem                       | ঈয়ারেম                        | তাদের/আপনার                         | Their/Your (formal)                 |
+| Genitiv     | Ihrer    | ঈয়ার           | তাদের/আপনার     | -                           | -                             | -                                   | -                                   |

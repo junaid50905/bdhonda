@@ -161,8 +161,8 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/safeties/delete/activity_picture/{id}', ['controller' => 'Safeties', 'action' => 'delete'])->setPass(['id']);
         $builder->connect('/safeties/edit/activity_picture/{id}', ['controller' => 'Safeties', 'action' => 'editActivityPicture'])->setPass(['id']);
 
-        // $builder->connect('/safeties/edit/activity_picture/{id}', ['controller' => 'Safeties', 'action' => 'editActivityPicture'])->setPass(['id']);
         $builder->connect('/safeties/add/pdsa', ['controller' => 'Safeties', 'action' => 'pdsa']);
+        $builder->connect('/safeties/edit/pdsa/{id}', ['controller' => 'Safeties', 'action' => 'editPdsa'])->setPass(['id']);
         $builder->connect('/safeties/add/education', ['controller' => 'Safeties', 'action' => 'education']);
 
         // jobs

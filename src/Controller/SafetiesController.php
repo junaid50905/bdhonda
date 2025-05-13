@@ -365,7 +365,6 @@ class SafetiesController extends AppController
         $this->set(compact('activity_picture'));
     }
 
-
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
@@ -381,13 +380,106 @@ class SafetiesController extends AppController
         return $this->redirect(['action' => 'allList']);
     }
 
-
-
     public function pdsa()
     {
         $this->viewBuilder()->setLayout('admin_layout');
         $this->set('page_title', 'Add new pdsa');
+
+        $pdsa = $this->Safety->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            // Get file first and store temporarily
+            $file = $this->request->getData('image');
+            $data = $this->request->getData();
+
+            // Remove file from patchEntity to avoid the error
+            unset($data['image']);
+
+            // Patch other form data
+            $pdsa = $this->Safety->patchEntity($pdsa, $data);
+
+            // Add additional fields
+            $pdsa->safety_category = 'pdsa';
+            $pdsa->order = 1;
+            $pdsa->status = 1;
+            $pdsa->created_by = null;
+            $pdsa->modified_by = null;
+            $pdsa->created = date('Y-m-d H:i:s');
+            $pdsa->modified = date('Y-m-d H:i:s');
+
+            // Handle file upload if present
+            if ($file && $file->getError() === UPLOAD_ERR_OK) {
+                $fileName = uniqid() . '_' . $file->getClientFilename();
+
+
+                $uploadPath = WWW_ROOT . 'assets/public/images/safeties/pdsa';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                $targetPath = $uploadPath . DS . $fileName;
+                $file->moveTo($targetPath);
+
+                $pdsa->image = $fileName;
+                $pdsa->name = $this->request->getData('title');
+            }
+
+            if ($this->Safety->save($pdsa)) {
+                $this->Flash->success(__('The pdsa picture has been saved.'));
+                return $this->redirect(['action' => 'allList']);
+            }
+
+            $this->Flash->error(__('Unable to save the activity picture.'));
+        }
+
+        $this->set(compact('pdsa'));
     }
+    
+    public function editPdsa($id = null)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit PDSA picture');
+
+        $pdsa = $this->Safety->get($id);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $data = $this->request->getData();
+            $file = $data['image'] ?? null;
+            unset($data['image']);
+
+            // Patch other fields
+            $pdsa = $this->Safety->patchEntity($pdsa, $data);
+            $pdsa->name = $data['title'] ?? $pdsa->name;
+            $pdsa->modified = date('Y-m-d H:i:s');
+
+            // Handle image upload if new file is provided
+            if ($file && $file->getError() === UPLOAD_ERR_OK) {
+                $uploadPath = WWW_ROOT . 'assets/public/images/safeties/pdsa';
+                if (!is_dir($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                // Delete old image if exists
+                if (!empty($pdsa->image) && file_exists($uploadPath . DS . $pdsa->image)) {
+                    unlink($uploadPath . DS . $pdsa->image);
+                }
+
+                $fileName = uniqid() . '_' . $file->getClientFilename();
+                $file->moveTo($uploadPath . DS . $fileName);
+                $pdsa->image = $fileName;
+            }
+
+            if ($this->Safety->save($pdsa)) {
+                $this->Flash->success(__('The activity picture has been updated.'));
+                return $this->redirect(['action' => 'allList']);
+            }
+
+            $this->Flash->error(__('Unable to update the activity picture.'));
+        }
+
+        $this->set(compact('pdsa'));
+    }
+
     public function education()
     {
         $this->viewBuilder()->setLayout('admin_layout');

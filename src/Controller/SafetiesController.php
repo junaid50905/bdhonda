@@ -434,7 +434,7 @@ class SafetiesController extends AppController
 
         $this->set(compact('pdsa'));
     }
-    
+
     public function editPdsa($id = null)
     {
         $this->viewBuilder()->setLayout('admin_layout');
@@ -480,10 +480,72 @@ class SafetiesController extends AppController
         $this->set(compact('pdsa'));
     }
 
+
     public function education()
     {
         $this->viewBuilder()->setLayout('admin_layout');
         $this->set('page_title', 'Add new video');
+
+
+        // Create a new entity
+        $education = $this->Safety->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            $education = $this->Safety->patchEntity($education, $data);
+
+            // Add additional fields
+            $education->safety_category = 'education';
+            $education->name = $this->request->getData('title') ?? null;
+            $education->image = $data['image'] ?? null;
+            $education->order = $data['order'] ?? null;
+            $education->status = 1;
+            $education->created_by = null;
+            $education->modified_by = null;
+            $education->created = date('Y-m-d H:i:s');
+            $education->modified = date('Y-m-d H:i:s');
+
+
+            if ($this->Safety->save($education)) {
+                $this->Flash->success(__('Education video has been saved.'));
+                return $this->redirect(['action' => 'allList']);
+            } else {
+                $this->Flash->error(__('Failed to save education video.'));
+            }
+        }
+
+        $this->set(compact('education'));
     }
 
+    public function editEducation($id = null)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit Education Video');
+
+        // Load the entity
+        $education = $this->Safety->get($id);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $data = $this->request->getData();
+
+            $education = $this->Safety->patchEntity($education, $data);
+
+            // Add additional fields
+            $education->name = $this->request->getData('title') ?? null;
+            $education->image = $data['image'] ?? null;
+            $education->order = $data['order'] ?? null;
+            $education->status = $data['status'];
+            $education->modified = date('Y-m-d H:i:s');
+
+            if ($this->Safety->save($education)) {
+                $this->Flash->success(__('Education video has been updated.'));
+                return $this->redirect(['action' => 'allList']);
+            } else {
+                $this->Flash->error(__('Failed to update education video.'));
+            }
+        }
+
+        $this->set(compact('education'));
+    }
 }

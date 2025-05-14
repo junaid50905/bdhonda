@@ -51,7 +51,7 @@ class JobsController extends AppController
     {
         $this->viewBuilder()->setLayout('admin_layout');
         $this->set('page_title', 'Applicants');
-        
+
 
         // Fetch applicants without any recursive data (no associations)
         $applicantsTable = TableRegistry::getTableLocator()->get('Applicants');

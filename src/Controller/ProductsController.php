@@ -6,6 +6,11 @@ namespace App\Controller;
 
 use Cake\Http\Exception\NotFoundException;
 use Cake\Routing\Router;
+use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
+use Cake\Filesystem\Folder;
+use Cake\Filesystem\File;
+
 
 /**
  * Products Controller
@@ -14,6 +19,15 @@ use Cake\Routing\Router;
  */
 class ProductsController extends AppController
 {
+    protected $Products;
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->Products = TableRegistry::getTableLocator()->get('products');
+    }
+
+
     public function index($slug = null)
     {
         // Set the page title, meta description, and keywords
@@ -322,4 +336,459 @@ class ProductsController extends AppController
 
         $this->set('products', $products);
     }
+
+    public function add()
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Add new products');
+
+        $product = $this->Products->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            $slug = Text::slug($data['name']);
+            // Slug generation
+            $data['slug'] = $slug;
+
+            // Set common fields
+            $data['order'] = 1;
+            $data['status'] = 1;
+            $data['created_by'] = null;
+            $data['modified_by'] = null;
+            $data['created'] = date('Y-m-d H:i:s');
+            $data['modified'] = date('Y-m-d H:i:s');
+
+            // File upload path
+            $uploadPath = WWW_ROOT . 'assets/public/images/';
+
+            // Handle file uploads
+            $fileFields = [
+                'product_thumb',
+                'home_bg',
+                'small_logo',
+                'inner_bg',
+                'about_image',
+                'specifications_image',
+                'price_image',
+                'brochure'
+            ];
+
+            foreach ($fileFields as $field) {
+                if (!empty($data[$field]) && $data[$field]->getError() === UPLOAD_ERR_OK) {
+                    $slug = Text::slug($data['name']);
+
+                    // ✅ Set different folder for product_thumb
+                    if ($field === 'product_thumb') {
+                        $pictureUploadedPath = $uploadPath . 'thumb/';
+                    } else {
+                        $pictureUploadedPath = $uploadPath . $slug . '/';
+                    }
+
+                    // ✅ Create directory if not exists
+                    if (!is_dir($pictureUploadedPath)) {
+                        mkdir($pictureUploadedPath, 0775, true);
+                    }
+
+                    $file = $data[$field];
+                    $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+                    $filename = Text::uuid() . '.' . $extension;
+
+                    $file->moveTo($pictureUploadedPath . $filename);
+
+                    // Store filename only
+                    $data[$field] = $filename;
+                } else {
+                    unset($data[$field]);
+                }
+            }
+
+
+
+
+            // Save product
+            $product = $this->Products->patchEntity($product, $data);
+
+            if ($this->Products->save($product)) {
+                $this->Flash->success(__('Product has been saved successfully.'));
+                return $this->redirect(['action' => 'allList']);
+            } else {
+                $this->Flash->error(__('Unable to save the product. Please try again.'));
+            }
+        }
+
+        $this->set(compact('product'));
+    }
+
+    public function edit($id = null)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit product');
+
+        $product = $this->Products->get($id);
+
+        if ($this->request->is(['post', 'put'])) {
+            $data = $this->request->getData();
+            $slug = Text::slug($data['name']);
+            $data['slug'] = $slug;
+            $data['modified'] = date('Y-m-d H:i:s');
+
+            $uploadPath = WWW_ROOT . 'assets/public/images/';
+            $fileFields = [
+                'product_thumb',
+                'home_bg',
+                'small_logo',
+                'inner_bg',
+                'about_image',
+                'specifications_image',
+                'price_image',
+                'brochure'
+            ];
+
+            foreach ($fileFields as $field) {
+                if (!empty($data[$field]) && $data[$field]->getError() === UPLOAD_ERR_OK) {
+                    if ($field === 'product_thumb') {
+                        $pictureUploadedPath = $uploadPath . 'thumb/';
+                    } else {
+                        $pictureUploadedPath = $uploadPath . $slug . '/';
+                    }
+
+                    if (!is_dir($pictureUploadedPath)) {
+                        mkdir($pictureUploadedPath, 0775, true);
+                    }
+
+                    $file = $data[$field];
+                    $extension = pathinfo($file->getClientFilename(), PATHINFO_EXTENSION);
+                    $filename = Text::uuid() . '.' . $extension;
+
+                    $file->moveTo($pictureUploadedPath . $filename);
+                    $data[$field] = $filename;
+                } else {
+                    unset($data[$field]);
+                }
+            }
+
+            $product = $this->Products->patchEntity($product, $data);
+
+            if ($this->Products->save($product)) {
+                $this->Flash->success(__('Product has been updated successfully.'));
+                return $this->redirect(['action' => 'allList']);
+            } else {
+                $this->Flash->error(__('Unable to update the product. Please try again.'));
+            }
+        }
+
+        $this->set(compact('product'));
+    }
+
+
+
+    // public function addProductDetails(?int $id = null)
+    // {
+
+    //     $this->viewBuilder()->setLayout('admin_layout');
+    //     $this->set('page_title', 'Add product details');
+
+
+    //     $productTable = TableRegistry::getTableLocator()->get('Products');
+    //     $colorTable = TableRegistry::getTableLocator()->get('Colors');
+    //     $featureTable = TableRegistry::getTableLocator()->get('Features');
+    //     $priceTable = TableRegistry::getTableLocator()->get('Prices');
+    //     $bodyDimensionTable = TableRegistry::getTableLocator()->get('BodyDimensions');
+    //     $engineTable = TableRegistry::getTableLocator()->get('Engines');
+    //     $transmissionTable = TableRegistry::getTableLocator()->get('Transmissions');
+    //     $tyresBrakeTable = TableRegistry::getTableLocator()->get('TyresBrakes');
+    //     $framesSuspensionTable = TableRegistry::getTableLocator()->get('FramesSuspensions');
+    //     $electricalTable = TableRegistry::getTableLocator()->get('Electricals');
+
+    //     $product = $productTable->get($id);
+
+
+    //     $this->set([
+    //         'page_title' => 'Products',
+    //         'product_id' => $id,
+    //         'product_slug' => $product->slug,
+    //         'product_details' => $product
+    //     ]);
+
+    //     $request = $this->getRequest();
+
+
+
+
+    //     // dd($request);
+
+    //     // if ($request->is('post')) {
+    //     //     $data = $request->getData();
+    //     //     $slug = $product->slug;
+
+    //     //     // Handle Color
+    //     //     if (!empty($data['Color'])) {
+    //     //         if (!empty($data['Color']['temp_image']->getClientFilename())) {
+    //     //             $newName = Text::uuid();
+    //     //             $uploadPath = $slug . '/colors/zoom';
+    //     //             $uploaded = $this->uploadImage($newName, $data['Color']['temp_image'], ['uploadTo' => $uploadPath]);
+    //     //             if ($uploaded) {
+    //     //                 $data['Color']['image'] = $uploaded;
+    //     //             }
+    //     //         }
+    //     //         if (!empty($data['Color']['temp_image_thumb']->getClientFilename())) {
+    //     //             $newName = Text::uuid();
+    //     //             $uploadPath = $slug . '/colors';
+    //     //             $uploaded = $this->uploadImage($newName, $data['Color']['temp_image_thumb'], ['uploadTo' => $uploadPath]);
+    //     //             if ($uploaded) {
+    //     //                 $data['Color']['image_thumb'] = $uploaded;
+    //     //             }
+    //     //         }
+    //     //         $colorEntity = $colorTable->patchEntity(
+    //     //             isset($data['Color']['id']) ? $colorTable->get($data['Color']['id']) : $colorTable->newEmptyEntity(),
+    //     //             $data['Color']
+    //     //         );
+    //     //         if ($colorTable->save($colorEntity)) {
+    //     //             $this->Flash->success('Color saved successfully!');
+    //     //             return $this->redirect($request->referer());
+    //     //         } else {
+    //     //             $this->Flash->error('Color not saved!');
+    //     //         }
+    //     //     }
+
+    //     //     // Repeat the same structure for other sections (Feature, Price, etc.)
+
+    //     //     // Example: Feature
+    //     //     if (!empty($data['Feature'])) {
+    //     //         if (!empty($data['Feature']['temp_image']->getClientFilename())) {
+    //     //             $newName = Text::uuid();
+    //     //             $uploadPath = $slug . '/features';
+    //     //             $uploaded = $this->uploadImage($newName, $data['Feature']['temp_image'], ['uploadTo' => $uploadPath]);
+    //     //             if ($uploaded) {
+    //     //                 $data['Feature']['image'] = $uploaded;
+    //     //             }
+    //     //         }
+    //     //         $featureEntity = $featureTable->patchEntity(
+    //     //             isset($data['Feature']['id']) ? $featureTable->get($data['Feature']['id']) : $featureTable->newEmptyEntity(),
+    //     //             $data['Feature']
+    //     //         );
+    //     //         if ($featureTable->save($featureEntity)) {
+    //     //             $this->Flash->success('Feature saved successfully!');
+    //     //             return $this->redirect($request->referer());
+    //     //         } else {
+    //     //             $this->Flash->error('Feature not saved!');
+    //     //         }
+    //     //     }
+
+    //     //     // Repeat this pattern for: Price, BodyDimension, Engine, Transmission, TyresBrake, FramesSuspension, Electrical
+
+    //     //     $tables = [
+    //     //         'Price' => $priceTable,
+    //     //         'BodyDimension' => $bodyDimensionTable,
+    //     //         'Engine' => $engineTable,
+    //     //         'Transmission' => $transmissionTable,
+    //     //         'TyresBrake' => $tyresBrakeTable,
+    //     //         'FramesSuspension' => $framesSuspensionTable,
+    //     //         'Electrical' => $electricalTable,
+    //     //     ];
+
+    //     //     foreach ($tables as $key => $table) {
+    //     //         if (!empty($data[$key])) {
+    //     //             $entity = $table->patchEntity(
+    //     //                 isset($data[$key]['id']) ? $table->get($data[$key]['id']) : $table->newEmptyEntity(),
+    //     //                 $data[$key]
+    //     //             );
+    //     //             if ($table->save($entity)) {
+    //     //                 $this->Flash->success("{$key} saved successfully!");
+    //     //                 return $this->redirect($request->referer());
+    //     //             } else {
+    //     //                 $this->Flash->error("{$key} not saved!");
+    //     //             }
+    //     //         }
+    //     //     }
+    //     // }
+
+    //     // return $this->response;
+    // }
+
+
+    // public function addProductDetails($id = null)
+    // {
+    //     $this->viewBuilder()->setLayout('admin_layout');
+    //     $this->set('page_title', 'Add product details');
+
+    //     $this->request->allowMethod(['get', 'post']);
+
+    //     $productsTable = TableRegistry::getTableLocator()->get('Products');
+    //     $colorsTable = TableRegistry::getTableLocator()->get('Colors');
+
+
+    //     // Load product with all associated details using contain()
+    //     $product = $productsTable->find()
+    //         ->contain([
+    //             'Colors',
+    //             'Features',
+    //             'Prices',
+    //             'BodyDimensions',
+    //             'Engines',
+    //             'Transmissions',
+    //             'TyresBrakes',
+    //             'FramesSuspensions',
+    //             'Electricals'
+    //         ])
+    //         ->where(['Products.id' => $id])
+    //         ->first();
+    //     if (!$product) {
+    //         throw new NotFoundException(__('Product not found'));
+    //     }
+
+    //     $this->set(compact('product'));
+
+    //     if ($this->request->is('post')) {
+
+    //         dd($this->request->getData());
+
+    //         $colorNewData = $this->request->getData()['data']['Color'];
+    //         $product = $this->request->getData()['data']['Product'];
+
+    //         // Handle file upload for temp_image
+    //         if ((!empty($colorNewData['temp_image']) && $colorNewData['temp_image']->getError() === 0) || !empty($colorNewData['temp_image_thumb']) && $colorNewData['temp_image_thumb']->getError() === 0) {
+    //             $tempImage = $colorNewData['temp_image'];
+    //             $tempImageThumb = $colorNewData['temp_image_thumb'];
+
+    //             $tempImageName = uniqid() . '-' . $tempImage->getClientFilename();
+    //             $tempImageThumbName = uniqid() . '-' . $tempImageThumb->getClientFilename();
+
+    //             $tempImage->moveTo(WWW_ROOT . 'assets/public/images/'. $product->slug . '/' .'colors/zoom/' . $tempImageName);
+    //             $tempImageThumb->moveTo(WWW_ROOT . 'assets/public/images/'. $product->slug . '/' .'colors/' . $tempImageThumbName);
+    //         }
+    //     }
+
+
+    // }
+
+
+
+    public function addProductDetails($id = null)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Add product details');
+
+        $this->request->allowMethod(['get', 'post']);
+
+        $productsTable = TableRegistry::getTableLocator()->get('Products');
+        $colorsTable = TableRegistry::getTableLocator()->get('Colors');
+
+        $product = $productsTable->find()
+            ->contain([
+                'Colors',
+                'Features',
+                'Prices',
+                'BodyDimensions',
+                'Engines',
+                'Transmissions',
+                'TyresBrakes',
+                'FramesSuspensions',
+                'Electricals'
+            ])
+            ->where(['Products.id' => $id])
+            ->first();
+
+        if (!$product) {
+            throw new NotFoundException(__('Product not found'));
+        }
+
+
+
+        $this->set(compact('product'));
+
+        if ($this->request->is('post')) {
+
+            $formName = $this->request->getData('form_name');
+
+            if($formName == 'update color details'){
+
+                $data = $this->request->getData()['data'];
+                $colorData = $data['Color'];
+                $productSlug = $data['Product']['slug'];
+
+                // Fetch existing color record
+                $color = $colorsTable->get($colorData['id']);
+
+                // Handle image upload if available
+                if (!empty($colorData['temp_image']) && $colorData['temp_image']->getError() === 0) {
+                    $image = $colorData['temp_image'];
+                    $imageName = uniqid() . '-' . $image->getClientFilename();
+                    $image->moveTo(WWW_ROOT . 'assets/public/images/' . $productSlug . '/colors/zoom/' . $imageName);
+                    $colorData['image'] = $imageName; // Assuming 'image' is the DB column
+                }
+
+                if (!empty($colorData['temp_image_thumb']) && $colorData['temp_image_thumb']->getError() === 0) {
+                    $thumb = $colorData['temp_image_thumb'];
+                    $thumbName = uniqid() . '-' . $thumb->getClientFilename();
+                    $thumb->moveTo(WWW_ROOT . 'assets/public/images/' . $productSlug . '/colors/' . $thumbName);
+                    $colorData['image_thumb'] = $thumbName; // Assuming 'image_thumb' is the DB column
+                }
+
+                // Patch the color entity with updated data
+                $color = $colorsTable->patchEntity($color, $colorData);
+
+                if ($colorsTable->save($color)) {
+                    $this->Flash->success(__('Color details updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update color details.'));
+                }
+            }elseif($formName == 'add color details'){
+
+                $data = $this->request->getData();
+                $colorData = $data['Color'];
+                $slug = $data['Product']['slug'];
+
+                $colorEntity = $colorsTable->newEmptyEntity();
+                $colorEntity = $colorsTable->patchEntity($colorEntity, [
+                    'product_id' => $colorData['product_id'],
+                    'name' => $colorData['name'],
+                    'tab_name' => $colorData['tab_name'],
+                    'status' => 1
+                ]);
+
+                // Handle file upload
+                $uploadPath = WWW_ROOT . 'assets/public/images/' . $slug . '/colors/';
+                $zoomPath = $uploadPath . 'zoom/';
+
+                if (!file_exists($zoomPath)) {
+                    mkdir($zoomPath, 0755, true);
+                }
+
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+                // Product image
+                if (!empty($colorData['temp_image']) && $colorData['temp_image']->getError() === 0) {
+                    $image = $colorData['temp_image'];
+                    $imageName = uniqid() . '-' . $image->getClientFilename();
+                    $image->moveTo($zoomPath . $imageName);
+                    $colorEntity->image = $imageName;
+                }
+
+                // Product thumbnail
+                if (!empty($colorData['temp_image_thumb']) && $colorData['temp_image_thumb']->getError() === 0) {
+                    $thumb = $colorData['temp_image_thumb'];
+                    $thumbName = uniqid() . '-' . $thumb->getClientFilename();
+                    $thumb->moveTo($uploadPath . $thumbName);
+                    $colorEntity->image_thumb = $thumbName;
+                }
+
+                if ($colorsTable->save($colorEntity)) {
+                    $this->Flash->success(__('Color added successfully.'));
+                    return $this->redirect(['action' => 'addProductDetails', $id]);
+                } else {
+                    $this->Flash->error(__('Failed to add color.'));
+                }
+
+
+            }
+
+        }
+    }
+
+
+
 }

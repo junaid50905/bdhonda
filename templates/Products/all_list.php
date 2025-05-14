@@ -53,7 +53,7 @@
                                         <?php
                                         echo $this->Html->link(
                                             'Edit',
-                                            '/products/add/' . $product['id'],
+                                            '/products/edit/' . $product['id'],
                                             array('class' => array('btn', 'yellow'))
                                         );
                                         ?>

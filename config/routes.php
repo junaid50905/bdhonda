@@ -164,6 +164,7 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/safeties/add/pdsa', ['controller' => 'Safeties', 'action' => 'pdsa']);
         $builder->connect('/safeties/edit/pdsa/{id}', ['controller' => 'Safeties', 'action' => 'editPdsa'])->setPass(['id']);
         $builder->connect('/safeties/add/education', ['controller' => 'Safeties', 'action' => 'education']);
+        $builder->connect('/safeties/edit/education/{id}', ['controller' => 'Safeties', 'action' => 'editEducation'])->setPass(['id']);
 
         // jobs
         $builder->connect('/jobs/all_list', ['controller' => 'Jobs', 'action' => 'allList']);
@@ -173,9 +174,19 @@ return function (RouteBuilder $routes): void {
 
         // dealers
         $builder->connect('/dealers/all_list', ['controller' => 'Jobs', 'action' => 'allList']);
+        $builder->connect('/dealers/add', ['controller' => 'Dealers', 'action' => 'add']);
+        $builder->connect('/dealers/add_district', ['controller' => 'Dealers', 'action' => 'addDistrict']);
+        $builder->connect('/dealers/add_upazila', ['controller' => 'Dealers', 'action' => 'addUpazila']);
+        $builder->connect('/dealers/ajaxDistrictsByDivision/{divisionId}', ['controller' => 'Dealers', 'action' => 'ajaxDistrictsByDivision'])
+            ->setPass(['divisionId'])
+            ->setMethods(['GET']);
+
 
         // products
-        $builder->connect('/products/all_list', ['controller' => 'Jobs', 'action' => 'allList']);
+        $builder->connect('/products/all_list', ['controller' => 'Products', 'action' => 'allList']);
+        $builder->connect('/products/add', ['controller' => 'Products', 'action' => 'add']);
+        $builder->connect('/products/edit/{id}', ['controller' => 'Products', 'action' => 'edit'])->setPass(['id']);
+        $builder->connect('/products/add_product_details/{id}', ['controller' => 'Products', 'action' => 'addProductDetails'])->setPass(['id']);
 
         // part prices
         $builder->connect('/part-prices/all_list', ['controller' => 'PartPrices', 'action' => 'allList']);

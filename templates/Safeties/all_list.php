@@ -155,7 +155,7 @@
                                 <td><?php echo $safety['order']; ?></td>
                                 <td><?php echo $safety['status']; ?></td>
                                 <td style="width: 115px;">
-                                    <?php echo $this->Html->link('Edit', '/safeties/add/' . $safety['id'] . '?model=education', array('class' => array('btn', 'green', 'btn-xs'))); ?>
+                                    <?= $this->Html->link('Edit', '/safeties/edit/education/' . $safety['id'], ['class' => 'btn green btn-xs']) ?>
                                     <?php
                                     echo $this->Form->postLink(
                                         'Delete',

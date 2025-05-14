@@ -18,8 +18,11 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <?= $this->Form->create(null, ['type' => 'file', 'url' => ['enctype' => 'multipart/form-data', 'controller' => 'Safeties', 'action' => 'education'], 'class' => 'form-horizontal']) ?>
-
+                <?= $this->Form->create($education, [
+                    'type' => 'file',
+                    'url' => ['controller' => 'Safeties', 'action' => 'editEducation', $education->id],
+                    'class' => 'form-horizontal'
+                ]) ?>
                 <?= $this->Form->hidden('id', ['value' => '' ?? null]) ?>
 
                 <div class="form-body">
@@ -31,7 +34,8 @@
                                 'class' => 'form-control',
                                 'label' => false,
                                 'placeholder' => 'Video Title',
-                                'required' => false
+                                'required' => false,
+                                'value' => $education->name
                             ]) ?>
                         </div>
                     </div>
@@ -43,7 +47,9 @@
                                 'class' => 'form-control',
                                 'label' => false,
                                 'placeholder' => 'Video URL',
-                                'required' => false
+                                'required' => false,
+                                'value' => $education->image
+
                             ]) ?>
                             <small id="emailHelp" class="form-text text-muted">EX: https://www.youtube.com/embed/sXUTS85Tl8o</small>
                         </div>
@@ -57,8 +63,24 @@
                                 'label' => false,
                                 'placeholder' => 'Video URL',
                                 'required' => false,
-                                'type' => 'number'
+                                'type' => 'number',
+                                'value' => $education->order
+
                             ]) ?>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Status</label>
+                        <div class="col-md-6">
+                            <?= $this->Form->control('status', [
+                                'type' => 'select',
+                                'options' => ['1' => 'Active', '0' => 'Inactive'],
+                                'class' => 'form-control',
+                                'label' => false,
+                                'default' => $education->status ?? '1'
+                            ]) ?>
+
                         </div>
                     </div>
 

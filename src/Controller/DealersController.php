@@ -6,10 +6,22 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
+
+
 
 
 class DealersController extends AppController
 {
+    protected $District;
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->District = TableRegistry::getTableLocator()->get('districts');
+    }
+
+
     public function dealerLocator()
     {
         $this->set('page_title', 'Dealer Locator');
@@ -46,6 +58,96 @@ class DealersController extends AppController
 
         $this->set(compact('dealers'));
     }
+
+    public function add()
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Add new dealer');
+
+        $DivisionsTable = $this->fetchTable('Divisions');
+
+        // Fetch the divisions as an array (id => name)
+        $divisions = $DivisionsTable->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name',
+            'order' => ['name' => 'ASC']
+        ])->toArray();
+
+        $this->set(compact('divisions'));
+    }
+
+    public function addDistrict()
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Add new district');
+
+        $district = $this->District->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            // Get file first and store temporarily
+            $data = $this->request->getData();
+
+            // dd($data);
+
+            // Patch other form data
+            $district = $this->District->patchEntity($district, $data);
+
+            // Add additional fields
+            $district->created = date('Y-m-d H:i:s');
+            $district->modified = date('Y-m-d H:i:s');
+            $district->division_id = $data['division_id'];
+            $district->name = $data['name'];
+            $district->status = 1;
+            $district->created_by = null;
+            $district->modified_by = null;
+
+
+
+            if ($this->District->save($district)) {
+                $this->Flash->success(__('Added new district successfully.'));
+                return $this->redirect(['action' => 'add']);
+            }
+
+            $this->Flash->error(__('Unable to save the press release.'));
+        }
+
+        $this->set(compact('district'));
+
+    }
+
+    public function addUpazila()
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Add new district');
+
+    }
+
+    public function ajaxDistrictsByDivision($divisionId)
+    {
+        return 'something';
+        // $this->request->allowMethod(['get']);
+        // $this->autoRender = false;
+
+        // $districts = $this->District->find('list', [
+        //     'keyField' => 'id',
+        //     'valueField' => 'name',
+        //     'conditions' => ['division_id' => $divisionId]
+        // ])->toArray();
+
+        // // Output plain <option> list
+        // header('Content-Type: text/html; charset=utf-8');
+
+        // echo '<option value="">Select District</option>';
+        // foreach ($districts as $id => $name) {
+        //     echo '<option value="' . h($id) . '">' . h($name) . '</option>';
+        // }
+        // return;
+    }
+
+
+
+
+
 
     public function allApplicationList()
     {

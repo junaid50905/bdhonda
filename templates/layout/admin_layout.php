@@ -15,6 +15,8 @@
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
+    <?= $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken')); ?>
+
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
@@ -24,6 +26,8 @@
     <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
     <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
+
+
 
     <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
     <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />

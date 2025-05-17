@@ -191,6 +191,8 @@ return function (RouteBuilder $routes): void {
 
         // part prices
         $builder->connect('/part-prices/all_list', ['controller' => 'PartPrices', 'action' => 'allList']);
+        $builder->connect('/part-prices/add', ['controller' => 'PartPrices', 'action' => 'add']);
+        $builder->connect('/part-prices/edit/{id}', ['controller' => 'PartPrices', 'action' => 'edit'])->setPass(['id']);
 
         // queries
         $builder->connect('/queries/all_list', ['controller' => 'PartPrices', 'action' => 'allList']);

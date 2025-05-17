@@ -3,7 +3,7 @@
         <?php
         echo $this->Html->link(
             'Add New Part Price',
-            '/part_prices/add',
+            '/part-prices/add',
             array('class' => array('btn', 'blue', 'pull-right'))
         );
         ?>
@@ -41,7 +41,7 @@
                                         <?php
                                         echo $this->Html->link(
                                             'Edit',
-                                            '/part_prices/add/' . $partPrice['id'],
+                                            '/part-prices/edit/' . $partPrice['id'],
                                             array('class' => array('btn', 'blue'))
                                         );
                                         ?>

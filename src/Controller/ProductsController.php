@@ -679,6 +679,9 @@ class ProductsController extends AppController
         $featuresTable = TableRegistry::getTableLocator()->get('Features');
         $pricesTable = TableRegistry::getTableLocator()->get('Prices');
         $bodyDimensionsTable = TableRegistry::getTableLocator()->get('BodyDimensions');
+        $enginesTable = TableRegistry::getTableLocator()->get('Engines');
+        $transmissionsTable = TableRegistry::getTableLocator()->get('Transmissions');
+        $framesSuspensionsTable = TableRegistry::getTableLocator()->get('FramesSuspensions');
 
         $product = $productsTable->find()
             ->contain([
@@ -694,7 +697,7 @@ class ProductsController extends AppController
             ])
             ->where(['Products.id' => $id])
             ->first();
-
+        // dd($product);
         if (!$product) {
             throw new NotFoundException(__('Product not found'));
         }
@@ -904,6 +907,52 @@ class ProductsController extends AppController
                     return $this->redirect($this->referer());
                 } else {
                     $this->Flash->error(__('Unable to update body dimension.'));
+                }
+            }elseif ($formName == 'engine') {
+
+                $data = $this->request->getData();
+                $engineData = $data['Engine'];
+                $engine = $enginesTable->get($engineData['id']);
+
+                $engine = $enginesTable->patchEntity($engine, $engineData);
+
+                if ($enginesTable->save($engine)) {
+                    $this->Flash->success(__('Engine data updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update engine data.'));
+                }
+            }elseif ($formName == 'transmission') {
+
+                $data = $this->request->getData();
+
+                $transmissionData = $data['Transmission'];
+
+                $transmission = $transmissionsTable->get($transmissionData['id']);
+
+                $transmission = $transmissionsTable->patchEntity($transmission, $transmissionData);
+
+                if ($transmissionsTable->save($transmission)) {
+                    $this->Flash->success(__('Transmissions data updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update transmission data.'));
+                }
+            }elseif ($formName == 'frame suspension') {
+
+                $data = $this->request->getData();
+
+                $frameSuspensionData = $data['FramesSuspension'];
+
+                $frameSuspension = $framesSuspensionsTable->get($frameSuspensionData['id']);
+
+                $frameSuspension = $framesSuspensionsTable->patchEntity($frameSuspension, $frameSuspensionData);
+
+                if ($framesSuspensionsTable->save($frameSuspension)) {
+                    $this->Flash->success(__('Frames suspensions data updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update frames suspensions data.'));
                 }
             }
 

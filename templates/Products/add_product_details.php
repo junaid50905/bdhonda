@@ -498,4 +498,278 @@
         <!-- END TABLE PORTLET-->
     </div>
 
+    <div class="col-md-6 col-sm-12">
+        <!-- BEGIN TABLE PORTLET-->
+        <div class="portlet box red">
+            <div class="portlet-title">
+                <div class="caption">Add Engine Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+                <div class="form-body">
+                    <?php if (!empty($product['engines'][0]['id'])) {
+                        echo $this->Form->input(
+                            'form_name',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => 'engine')
+                        );
+                    } ?>
+                    <?php if (!empty($product['engines'][0]['id'])) {
+                        echo $this->Form->input(
+                            'Engine.id',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product['engines'][0]['id'])
+                        );
+                    } ?>
+                    <?php echo $this->Form->input(
+                        'Engine.product_id',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->id)
+                    ); ?>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Type</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.type',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['type'])) ? 'value="' . $product['engines'][0]['type'] . '"' : 'placeholder="Type"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Displacement</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.displacement',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['displacement'])) ? 'value="' . $product['engines'][0]['displacement'] . '"' : 'placeholder="Displacement"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Max Net Power</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.max_net_power',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['max_net_power'])) ? 'value="' . $product['engines'][0]['max_net_power'] . '"' : 'placeholder="Max Net Power"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Max Net Torque</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.max_net_torque',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['max_net_torque'])) ? 'value="' . $product['engines'][0]['max_net_torque'] . '"' : 'placeholder="Max Net Torque"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Bore</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.bore',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['bore'])) ? 'value="' . $product['engines'][0]['bore'] . '"' : 'placeholder="Bore"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Stroke</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.stroke',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['stroke'])) ? 'value="' . $product['engines'][0]['stroke'] . '"' : 'placeholder="Stroke"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Compression Ratio</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.compression_ratio',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['compression_ratio'])) ? 'value="' . $product['engines'][0]['compression_ratio'] . '"' : 'placeholder="Compression Ratio"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Air Filter Type</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.air_filter_type',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['air_filter_type'])) ? 'value="' . $product['engines'][0]['air_filter_type'] . '"' : 'placeholder="Air Filter Type"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Starting Method</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Engine.starting_method',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['engines'][0]['starting_method'])) ? 'value="' . $product['engines'][0]['starting_method'] . '"' : 'placeholder="Starting Method"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn red">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END TABLE PORTLET-->
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="col-md-6 col-sm-12">
+        <!-- BEGIN TABLE PORTLET-->
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">Add Transmission Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+                <div class="form-body">
+                    <?php if (!empty($product['transmissions'][0]['id'])) {
+                        echo $this->Form->input(
+                            'form_name',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => 'transmission')
+                        );
+                    } ?>
+                    <?php if (!empty($product['transmissions'][0]['id'])) {
+                        echo $this->Form->input(
+                            'Transmission.id',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product['transmissions'][0]['id'])
+                        );
+                    } ?>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Type</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Transmission.transmission_type',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['transmissions'][0]['transmission_type'])) ? 'value="' . $product['transmissions'][0]['transmission_type'] . '"' : 'placeholder="Transmission Type"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">No of Gears</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Transmission.no_of_gears',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['transmissions'][0]['no_of_gears'])) ? 'value="' . $product['transmissions'][0]['no_of_gears'] . '"' : 'placeholder="No of Gears"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Gear Pattern</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Transmission.gear_pattern',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['transmissions'][0]['gear_pattern'])) ? 'value="' . $product['transmissions'][0]['gear_pattern'] . '"' : 'placeholder="Gear Pattern"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Max Speed</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Transmission.max_speed',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['transmissions'][0]['max_speed'])) ? 'value="' . $product['transmissions'][0]['max_speed'] . '"' : 'placeholder="Max Speed"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn blue">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END TABLE PORTLET-->
+    </div>
+
+    <div class="col-md-6 col-sm-12">
+        <!-- BEGIN TABLE PORTLET-->
+        <div class="portlet box red">
+            <div class="portlet-title">
+                <div class="caption">Add Frames & Suspensions Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+                <div class="form-body">
+                    <?php if (!empty($product['frames_suspensions'][0]['id'])) {
+                        echo $this->Form->input(
+                            'form_name',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => 'frame suspension')
+                        );
+                    } ?>
+                    <?php if (!empty($product['frames_suspensions'][0]['id'])) {
+                        echo $this->Form->input(
+                            'FramesSuspension.id',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product['frames_suspensions'][0]['id'])
+                        );
+                    } ?>
+                    <?php echo $this->Form->input(
+                        'FramesSuspension.product_id',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->id)
+                    ); ?>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Frame Type</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'FramesSuspension.frame_type',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['frames_suspensions'][0]['frame_type'])) ? 'value="' . $product['frames_suspensions'][0]['frame_type'] . '"' : 'placeholder="Frame Type"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Front</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'FramesSuspension.front',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['frames_suspensions'][0]['front'])) ? 'value="' . $product['frames_suspensions'][0]['front'] . '"' : 'placeholder="Front"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Rear</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'FramesSuspension.rear',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['frames_suspensions'][0]['rear'])) ? 'value="' . $product['frames_suspensions'][0]['rear'] . '"' : 'placeholder="Rear"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn red">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END TABLE PORTLET-->
+    </div>
+
 </div>

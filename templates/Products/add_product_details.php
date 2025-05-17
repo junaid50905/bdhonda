@@ -319,20 +319,179 @@
                                     'type' => 'file',
                                     'class' => 'form-inline'
                                 ]) ?>
-                                    <?php if (!empty($price['id'])) { ?>
-                                        <input type="hidden" name="data[Price][id]" class="form-control" value="<?php echo $price['id']; ?>" id="PriceId">
-                                    <?php } ?>
-                                    <input type="hidden" name="form_name" class="form-control" value="update price">
-                                    <input type="hidden" name="data[Price][product_id]" class="form-control" value="<?php echo $product->id; ?>" id="ColorProductId">
-                                    <td><input name="data[Price][model]" class="form-control" <?php echo (!empty($price['model'])) ? 'value="' . $price['model'] . '"' : 'placeholder="Model Name" required="required"' ?> maxlength="100" type="text" id="ModelName"></td>
-                                    <td><input name="data[Price][price]" class="form-control" <?php echo (!empty($price['price'])) ? 'value="' . $price['price'] . '"' : 'placeholder="Model Price" required="required"' ?> maxlength="100" type="text" id="ModelPrice"></td>
-                                    <td><button type="submit" class="btn blue">Submit</button></td>
+                                <?php if (!empty($price['id'])) { ?>
+                                    <input type="hidden" name="data[Price][id]" class="form-control" value="<?php echo $price['id']; ?>" id="PriceId">
+                                <?php } ?>
+                                <input type="hidden" name="form_name" class="form-control" value="update price">
+                                <input type="hidden" name="data[Price][product_id]" class="form-control" value="<?php echo $product->id; ?>" id="ColorProductId">
+                                <td><input name="data[Price][model]" class="form-control" <?php echo (!empty($price['model'])) ? 'value="' . $price['model'] . '"' : 'placeholder="Model Name" required="required"' ?> maxlength="100" type="text" id="ModelName"></td>
+                                <td><input name="data[Price][price]" class="form-control" <?php echo (!empty($price['price'])) ? 'value="' . $price['price'] . '"' : 'placeholder="Model Price" required="required"' ?> maxlength="100" type="text" id="ModelPrice"></td>
+                                <td><button type="submit" class="btn blue">Submit</button></td>
                                 </form>
                             </tr>
                         <?php } ?>
                     </tbody>
                 </table>
                 <div class="clearfix"></div>
+                <!-- END FORM-->
+            </div>
+            <div class="portlet-title">
+                <div class="caption">Add Price Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+                <div class="form-body">
+                    <?php echo $this->Form->input(
+                        'form_name',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => 'add price')
+                    ); ?>
+                    <?php echo $this->Form->input(
+                        'Price.product_id',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->id)
+                    ); ?>
+                    <?php echo $this->Form->input(
+                        'Product.slug',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->slug)
+                    ); ?>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Model Name</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Price.model',
+                                array('class' => 'form-control', 'label' => false, 'placeholder' => 'Model Name', 'required' => true)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Model Price</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Price.price',
+                                array('class' => 'form-control', 'label' => false, 'placeholder' => 'Model Price', 'required' => true)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-5 col-md-9">
+                        <button type="submit" class="btn blue">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END TABLE PORTLET-->
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="col-md-6 col-sm-12">
+        <!-- BEGIN TABLE PORTLET-->
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">Add Body Dimension Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+                <div class="form-body">
+                    <?php if (!empty($product['body_dimensions'][0]['id'])) {
+                        echo $this->Form->input(
+                            'form_name',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => 'body dimension')
+                        );
+                    } ?>
+                    <?php if (!empty($product['body_dimensions'][0]['id'])) {
+                        echo $this->Form->input(
+                            'BodyDimension.id',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product['body_dimensions'][0]['id'])
+                        );
+                    } ?>
+                    <?php echo $this->Form->input(
+                        'BodyDimension.product_id',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->id)
+                    ); ?>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Length</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'BodyDimension.length',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['body_dimensions'][0]['length'])) ? 'value="' . $product['body_dimensions'][0]['length'] . '"' : 'placeholder="Length"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Width</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'BodyDimension.width',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['body_dimensions'][0]['width'])) ? 'value="' . $product['body_dimensions'][0]['width'] . '"' : 'placeholder="Width"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Height</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'BodyDimension.height',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['body_dimensions'][0]['height'])) ? 'value="' . $product['body_dimensions'][0]['height'] . '"' : 'placeholder="Height"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Wheel Base</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'BodyDimension.wheel_base',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['body_dimensions'][0]['wheel_base'])) ? 'value="' . $product['body_dimensions'][0]['wheel_base'] . '"' : 'placeholder="Wheel Base"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Ground Clearance</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'BodyDimension.ground_clearance',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['body_dimensions'][0]['ground_clearance'])) ? 'value="' . $product['body_dimensions'][0]['ground_clearance'] . '"' : 'placeholder="Ground Clearance"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Kerb Weight</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'BodyDimension.kerb_weight',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['body_dimensions'][0]['kerb_weight'])) ? 'value="' . $product['body_dimensions'][0]['kerb_weight'] . '"' : 'placeholder="Kerb Weight"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Fuel Tank Capacity</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'BodyDimension.fuel_tank_capacity',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['body_dimensions'][0]['fuel_tank_capacity'])) ? 'value="' . $product['body_dimensions'][0]['fuel_tank_capacity'] . '"' : 'placeholder="Fuel Tank Capacity"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn blue">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
                 <!-- END FORM-->
             </div>
         </div>

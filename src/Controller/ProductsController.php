@@ -678,6 +678,7 @@ class ProductsController extends AppController
         $colorsTable = TableRegistry::getTableLocator()->get('Colors');
         $featuresTable = TableRegistry::getTableLocator()->get('Features');
         $pricesTable = TableRegistry::getTableLocator()->get('Prices');
+        $bodyDimensionsTable = TableRegistry::getTableLocator()->get('BodyDimensions');
 
         $product = $productsTable->find()
             ->contain([
@@ -693,7 +694,6 @@ class ProductsController extends AppController
             ])
             ->where(['Products.id' => $id])
             ->first();
-
 
         if (!$product) {
             throw new NotFoundException(__('Product not found'));
@@ -869,6 +869,41 @@ class ProductsController extends AppController
                     return $this->redirect($this->referer());
                 } else {
                     $this->Flash->error(__('Unable to update price.'));
+                }
+            }elseif ($formName == 'add price') {
+
+                $data = $this->request->getData();
+                $priceData = $data['Price'];
+                $slug = $data['Product']['slug'];
+
+                $priceEntity = $pricesTable->newEmptyEntity();
+                $priceEntity = $pricesTable->patchEntity($priceEntity, [
+                    'product_id' => $priceData['product_id'],
+                    'model' => $priceData['model'],
+                    'price' => $priceData['price'],
+                    'status' => 1
+                ]);
+
+                if ($pricesTable->save($priceEntity)) {
+                    $this->Flash->success(__('New price added successfully.'));
+                    return $this->redirect(['action' => 'addProductDetails', $id]);
+                } else {
+                    $this->Flash->error(__('Failed to add price.'));
+                }
+            }elseif ($formName == 'body dimension') {
+
+                $data = $this->request->getData();
+                $bodyDimensionData = $data['BodyDimension'];
+
+                $bodyDimension = $bodyDimensionsTable->get($bodyDimensionData['id']);
+
+                $bodyDimension = $bodyDimensionsTable->patchEntity($bodyDimension, $bodyDimensionData);
+
+                if ($bodyDimensionsTable->save($bodyDimension)) {
+                    $this->Flash->success(__('Body dimension updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update body dimension.'));
                 }
             }
 

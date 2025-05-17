@@ -11,9 +11,11 @@
         <p></p>
     </div>
 
+    <!-- color -->
     <div class="col-md-12 col-sm-12">
         <!-- BEGIN TABLE PORTLET-->
         <div class="portlet box blue">
+
             <div class="portlet-title">
                 <div class="caption">All Colors</div>
                 <div class="tools">
@@ -150,12 +152,14 @@
                 <?php echo $this->Form->end(); ?>
                 <!-- END FORM-->
             </div>
+
+
         </div>
         <!-- END TABLE PORTLET-->
     </div>
 
-
     <div class="clearfix"></div>
+    <!-- feature -->
     <div class="col-md-12 col-sm-12">
         <!-- BEGIN TABLE PORTLET-->
         <div class="portlet box red">
@@ -179,16 +183,26 @@
                     <tbody>
                         <?php foreach ($product['features'] as $feature) { ?>
                             <tr>
-                                <form action="products/add_product_details" enctype="multipart/form-data" controller="products" class="form-inline" id="ProductAddProductDetailsForm" method="post" accept-charset="utf-8">
-                                    <?php if (!empty($feature->id)) { ?>
-                                        <input type="hidden" name="data[Feature][id]" class="form-control" value="<?php echo $feature->id; ?>" id="FeatureId">
-                                        <input type="hidden" name="data[Product][slug]" class="form-control" value="<?php echo $product->slug; ?>" id="ProductSlugForFeature">
-                                    <?php } ?>
-                                    <input type="hidden" name="data[Feature][product_id]" class="form-control" value="<?php echo $product->id; ?>" id="FeatureProductId">
-                                    <td><input name="data[Feature][name]" class="form-control" <?php echo (!empty($feature->name)) ? 'value="' . $feature->name . '"' : 'placeholder="Feature Name" required="required"' ?> maxlength="100" type="text" id="FeatureName"></td>
-                                    <td width="40%"><textarea rows="3" name="data[Feature][details]" class="form-control" id="FeatureDetails"><?php echo (!empty($feature->details)) ? $feature->details : 'required="required"' ?></textarea></td>
-                                    <td><input type="file" name="data[Feature][temp_image]" class="form-control" <?php echo (!empty($feature->image)) ? '' : 'required="required"' ?> id="FeatureTempImage"></td>
-                                    <td><button type="submit" class="btn red btn-xs">Update</button></td>
+
+                                <?= $this->Form->create(null, [
+                                    'url' => ['controller' => 'Products', 'action' => 'addProductDetails', $product->id],
+                                    'type' => 'file',
+                                    'id' => 'ProductAddProductDetailsForm',
+                                    'class' => 'form-inline'
+                                ]) ?>
+
+                                <?php if (!empty($feature->id)) { ?>
+                                    <input type="hidden" name="form_name" class="form-control" value="update feature">
+                                    <input type="hidden" name="data[Feature][id]" class="form-control" value="<?php echo $feature->id; ?>" id="FeatureId">
+                                    <input type="hidden" name="data[Product][slug]" class="form-control" value="<?php echo $product->slug; ?>" id="ProductSlugForFeature">
+                                <?php } ?>
+
+                                <input type="hidden" name="data[Feature][product_id]" class="form-control" value="<?php echo $product->id; ?>" id="FeatureProductId">
+                                <td><input name="data[Feature][name]" class="form-control" <?php echo (!empty($feature->name)) ? 'value="' . $feature->name . '"' : 'placeholder="Feature Name" required="required"' ?> maxlength="100" type="text" id="FeatureName"></td>
+                                <td width="40%"><textarea rows="3" name="data[Feature][details]" class="form-control" id="FeatureDetails"><?php echo (!empty($feature->details)) ? $feature->details : 'required="required"' ?></textarea></td>
+                                <td><input type="file" name="data[Feature][temp_image]" class="form-control" <?php echo (!empty($feature->image)) ? '' : 'required="required"' ?> id="FeatureTempImage"></td>
+                                <td><button type="submit" class="btn red btn-xs">Update</button></td>
+
                                 </form>
                                 <td>
                                     <?php
@@ -197,7 +211,7 @@
                                         array(
                                             'controller' => 'products',
                                             'action' => 'deleteFeature',
-                                            $feature['id']
+                                            $feature->id
                                         ),
                                         array(
                                             'class' => 'btn red btn-xs',
@@ -207,6 +221,113 @@
                                     );
                                     ?>
                                 </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                <div class="clearfix"></div>
+                <!-- END FORM-->
+            </div>
+            <div class="portlet-title">
+                <div class="caption">Add Feature Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+
+                <input type="hidden" name="form_name" value="add feature item">
+
+                <div class="form-body">
+                    <?php echo $this->Form->input(
+                        'Feature.product_id',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->id)
+                    ); ?>
+                    <?php echo $this->Form->input(
+                        'Product.slug',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->slug)
+                    ); ?>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Feature Name</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Feature.name',
+                                array('class' => 'form-control', 'label' => false, 'placeholder' => 'Feature Name', 'required' => true)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Feature Details</label>
+                        <div class="col-md-8">
+                            <?php echo $this->Form->input(
+                                'Feature.details',
+                                array('class' => 'form-control', 'label' => false, 'type' => 'textarea', 'required' => true)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Feature Image</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->file(
+                                'Feature.temp_image',
+                                array('class' => 'form-control', 'label' => false, 'required' => true)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-5 col-md-9">
+                        <button type="submit" class="btn red">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END TABLE PORTLET-->
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="col-md-12 col-sm-12">
+        <!-- BEGIN TABLE PORTLET-->
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">All Prices</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <table class="table table-bordered color-table">
+                    <thead>
+                        <tr>
+                            <th>Model Name</th>
+                            <th>Price</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($product['prices'] as $price) { ?>
+                            <tr>
+                                <?= $this->Form->create(null, [
+                                    'url' => ['controller' => 'Products', 'action' => 'addProductDetails', $product->id],
+                                    'type' => 'file',
+                                    'class' => 'form-inline'
+                                ]) ?>
+                                    <?php if (!empty($price['id'])) { ?>
+                                        <input type="hidden" name="data[Price][id]" class="form-control" value="<?php echo $price['id']; ?>" id="PriceId">
+                                    <?php } ?>
+                                    <input type="hidden" name="form_name" class="form-control" value="update price">
+                                    <input type="hidden" name="data[Price][product_id]" class="form-control" value="<?php echo $product->id; ?>" id="ColorProductId">
+                                    <td><input name="data[Price][model]" class="form-control" <?php echo (!empty($price['model'])) ? 'value="' . $price['model'] . '"' : 'placeholder="Model Name" required="required"' ?> maxlength="100" type="text" id="ModelName"></td>
+                                    <td><input name="data[Price][price]" class="form-control" <?php echo (!empty($price['price'])) ? 'value="' . $price['price'] . '"' : 'placeholder="Model Price" required="required"' ?> maxlength="100" type="text" id="ModelPrice"></td>
+                                    <td><button type="submit" class="btn blue">Submit</button></td>
+                                </form>
                             </tr>
                         <?php } ?>
                     </tbody>

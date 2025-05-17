@@ -20,11 +20,14 @@ use Cake\Filesystem\File;
 class ProductsController extends AppController
 {
     protected $Products;
+    protected $Features;
 
     public function initialize(): void
     {
         parent::initialize();
         $this->Products = TableRegistry::getTableLocator()->get('products');
+        $this->Features = TableRegistry::getTableLocator()->get('features');
+        $this->loadComponent('Flash');
     }
 
 
@@ -673,6 +676,8 @@ class ProductsController extends AppController
 
         $productsTable = TableRegistry::getTableLocator()->get('Products');
         $colorsTable = TableRegistry::getTableLocator()->get('Colors');
+        $featuresTable = TableRegistry::getTableLocator()->get('Features');
+        $pricesTable = TableRegistry::getTableLocator()->get('Prices');
 
         $product = $productsTable->find()
             ->contain([
@@ -688,6 +693,7 @@ class ProductsController extends AppController
             ])
             ->where(['Products.id' => $id])
             ->first();
+
 
         if (!$product) {
             throw new NotFoundException(__('Product not found'));
@@ -784,9 +790,106 @@ class ProductsController extends AppController
                 }
 
 
+            }elseif($formName == 'update feature'){
+                $data = $this->request->getData()['data'];
+                $featureData = $data['Feature'];
+                $productSlug = $data['Product']['slug'];
+
+                // Fetch existing color record
+                $feature = $featuresTable->get($featureData['id']);
+
+                // Handle image upload if available
+                if (!empty($featureData['temp_image']) && $featureData['temp_image']->getError() === 0) {
+                    $image = $featureData['temp_image'];
+                    $imageName = uniqid() . '-' . $image->getClientFilename();
+                    $image->moveTo(WWW_ROOT . 'assets/public/images/' . $productSlug . '/features/' . $imageName);
+                    $featureData['image'] = $imageName; // Assuming 'image' is the DB column
+                }
+
+                // Patch the color entity with updated data
+                $feature = $featuresTable->patchEntity($feature, $featureData);
+
+                if ($featuresTable->save($feature)) {
+                    $this->Flash->success(__('Featured data updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update color details.'));
+                }
+            }elseif ($formName == 'add feature item') {
+
+                $data = $this->request->getData();
+                $featureData = $data['Feature'];
+                $slug = $data['Product']['slug'];
+
+                $featureEntity = $featuresTable->newEmptyEntity();
+                $featureEntity = $featuresTable->patchEntity($featureEntity, [
+                    'product_id' => $featureData['product_id'],
+                    'name' => $featureData['name'],
+                    'details' => $featureData['details'],
+                    'status' => 1
+                ]);
+
+                // Handle file upload
+                $uploadPath = WWW_ROOT . 'assets/public/images/' . $slug . '/features/';
+
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0755, true);
+                }
+
+
+
+                // Feature image
+                if (!empty($featureData['temp_image']) && $featureData['temp_image']->getError() === 0) {
+                    $image = $featureData['temp_image'];
+                    $imageName = uniqid() . '-' . $image->getClientFilename();
+                    $image->moveTo($uploadPath . $imageName);
+                    $featureEntity->image = $imageName;
+                }
+
+
+                if ($featuresTable->save($featureEntity)) {
+                    $this->Flash->success(__('New feature added successfully.'));
+                    return $this->redirect(['action' => 'addProductDetails', $id]);
+                } else {
+                    $this->Flash->error(__('Failed to add feature.'));
+                }
+            }elseif ($formName == 'update price') {
+
+                $data = $this->request->getData()['data'];
+                $priceData = $data['Price'];
+
+                // Fetch existing color record
+                $price = $pricesTable->get($priceData['id']);
+
+                // Patch the color entity with updated data
+                $price = $pricesTable->patchEntity($price, $priceData);
+
+                if ($pricesTable->save($price)) {
+                    $this->Flash->success(__('Price updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update price.'));
+                }
             }
 
         }
+    }
+
+    public function deleteFeature($id)
+    {
+        $feature = $this->Features->get($id);
+
+        if (!$feature) {
+            throw new NotFoundException(__('Invalid Feature'));
+        }
+
+        if ($this->Features->delete($feature)) {
+            $this->Flash->success(__('Feature deleted successfully!'));
+        } else {
+            $this->Flash->error(__('Feature not deleted!'));
+        }
+
+        return $this->redirect($this->referer());
     }
 
 

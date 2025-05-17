@@ -37,7 +37,6 @@
                                 <td>
                                     <img src="<?= $this->Url->build('/assets/public/images/' . $product->slug . '/' . $product->small_logo) ?>" alt="">
                                 </td>
-
                                 <td>
                                     <b><?php echo $product['name']; ?></b>
                                 </td>

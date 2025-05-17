@@ -187,6 +187,7 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/products/add', ['controller' => 'Products', 'action' => 'add']);
         $builder->connect('/products/edit/{id}', ['controller' => 'Products', 'action' => 'edit'])->setPass(['id']);
         $builder->connect('/products/add_product_details/{id}', ['controller' => 'Products', 'action' => 'addProductDetails'])->setPass(['id']);
+        $builder->connect('/products/delete_feature/{id}', ['controller' => 'Products', 'action' => 'deleteFeature'])->setPass(['id']);
 
         // part prices
         $builder->connect('/part-prices/all_list', ['controller' => 'PartPrices', 'action' => 'allList']);

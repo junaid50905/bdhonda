@@ -17,10 +17,6 @@
                 </div>
             </div>
             <div class="portlet-body form">
-                <?= $this->Form->create(null, [
-                    'type' => 'file',
-                    'class' => 'form-horizontal'
-                ]) ?>
 
                 <?= $this->Form->create(null, ['type' => 'file', 'url' => ['enctype' => 'multipart/form-data', 'controller' => 'PartPrices', 'action' => 'add'], 'class' => 'form-horizontal']) ?>
 

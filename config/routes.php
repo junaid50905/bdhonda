@@ -208,6 +208,7 @@ return function (RouteBuilder $routes): void {
 
         // accessories
         $builder->connect('/accessories/all_list', ['controller' => 'Accessories', 'action' => 'allList']);
+        $builder->connect('/accessories/add', ['controller' => 'Accessories', 'action' => 'add']);
 
         // accessory_types
         $builder->connect('/accessory_types/all_list', ['controller' => 'Accessories', 'action' => 'allList']);

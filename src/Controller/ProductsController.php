@@ -682,6 +682,8 @@ class ProductsController extends AppController
         $enginesTable = TableRegistry::getTableLocator()->get('Engines');
         $transmissionsTable = TableRegistry::getTableLocator()->get('Transmissions');
         $framesSuspensionsTable = TableRegistry::getTableLocator()->get('FramesSuspensions');
+        $tyresBrakesTable = TableRegistry::getTableLocator()->get('TyresBrakes');
+        $electricalsTable = TableRegistry::getTableLocator()->get('Electricals');
 
         $product = $productsTable->find()
             ->contain([
@@ -953,6 +955,37 @@ class ProductsController extends AppController
                     return $this->redirect($this->referer());
                 } else {
                     $this->Flash->error(__('Unable to update frames suspensions data.'));
+                }
+            }elseif ($formName == 'tyres brakes') {
+
+                $data = $this->request->getData();
+                $tyresBrakesData = $data['TyresBrake'];
+
+                $tyresBrakes = $tyresBrakesTable->get($tyresBrakesData['id']);
+
+                $frameSuspension = $tyresBrakesTable->patchEntity($tyresBrakes, $tyresBrakesData);
+
+                if ($tyresBrakesTable->save($tyresBrakes)) {
+                    $this->Flash->success(__('Tyres Brakes data updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update tyres brakes data.'));
+                }
+            }elseif ($formName == 'electrical') {
+
+                $data = $this->request->getData();
+
+                $electricalData = $data['Electrical'];
+
+                $electrical = $electricalsTable->get($electricalData['id']);
+
+                $electrical = $electricalsTable->patchEntity($electrical, $electricalData);
+
+                if ($electricalsTable->save($electrical)) {
+                    $this->Flash->success(__('Electrical data updated successfully.'));
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error(__('Unable to update electrical data.'));
                 }
             }
 

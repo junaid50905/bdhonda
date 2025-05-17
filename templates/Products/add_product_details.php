@@ -772,4 +772,165 @@
         <!-- END TABLE PORTLET-->
     </div>
 
+    <div class="clearfix"></div>
+    <div class="col-md-6 col-sm-12">
+        <!-- BEGIN TABLE PORTLET-->
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <div class="caption">Add Tyres/Brakes Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+                <div class="form-body">
+                    <?php if (!empty($product['tyres_brakes'][0]['id'])) {
+                        echo $this->Form->input(
+                            'form_name',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => 'tyres brakes')
+                        );
+                    } ?>
+                    <?php if (!empty($product['tyres_brakes'][0]['id'])) {
+                        echo $this->Form->input(
+                            'TyresBrake.id',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product['tyres_brakes'][0]['id'])
+                        );
+                    } ?>
+                    <?php echo $this->Form->input(
+                        'TyresBrake.product_id',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->id)
+                    ); ?>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Tyre Size Front</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'TyresBrake.tyre_size_front',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['tyres_brakes'][0]['tyre_size_front'])) ? 'value="' . $product['tyres_brakes'][0]['tyre_size_front'] . '"' : 'placeholder="Tyre Size Front"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Tyre Size Rear</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'TyresBrake.tyre_size_rear',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['tyres_brakes'][0]['tyre_size_rear'])) ? 'value="' . $product['tyres_brakes'][0]['tyre_size_rear'] . '"' : 'placeholder="Tyre Size Rear"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Tyre Type Front</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'TyresBrake.tyre_type_front',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['tyres_brakes'][0]['tyre_type_front'])) ? 'value="' . $product['tyres_brakes'][0]['tyre_type_front'] . '"' : 'placeholder="Tyre Type Front"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Tyre Type Rear</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'TyresBrake.tyre_type_rear',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['tyres_brakes'][0]['tyre_type_rear'])) ? 'value="' . $product['tyres_brakes'][0]['tyre_type_rear'] . '"' : 'placeholder="Tyre Type Rear"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Brake Type Size Front</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'TyresBrake.brake_type_size_front',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['tyres_brakes'][0]['brake_type_size_front'])) ? 'value="' . $product['tyres_brakes'][0]['brake_type_size_front'] . '"' : 'placeholder="Brake Type Size Front"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Brake Type Size Rear</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'TyresBrake.brake_type_size_rear',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['tyres_brakes'][0]['brake_type_size_rear'])) ? 'value="' . $product['tyres_brakes'][0]['brake_type_size_rear'] . '"' : 'placeholder="Brake Type Size Rear"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn blue">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END TABLE PORTLET-->
+    </div>
+
+    <div class="col-md-6 col-sm-12">
+        <!-- BEGIN TABLE PORTLET-->
+        <div class="portlet box red">
+            <div class="portlet-title">
+                <div class="caption">Add Electrical Details</div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <!-- BEGIN FORM-->
+                <?php echo $this->Form->create(null, array('enctype' => 'multipart/form-data', 'url' => ['controller' => 'products', 'action' => 'addProductDetails', $product->id], 'class' => 'form-horizontal')); ?>
+                <div class="form-body">
+                    <?php if (!empty($product['electricals'][0]['id'])) {
+                        echo $this->Form->input(
+                            'form_name',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => 'electrical')
+                        );
+                    } ?>
+                    <?php if (!empty($product['electricals'][0]['id'])) {
+                        echo $this->Form->input(
+                            'Electrical.id',
+                            array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product['electricals'][0]['id'])
+                        );
+                    } ?>
+                    <?php echo $this->Form->input(
+                        'Electrical.product_id',
+                        array('type' => 'hidden', 'class' => 'form-control', 'label' => false, 'required' => false, 'value' => $product->id)
+                    ); ?>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Battery</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Electrical.battery',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['electricals'][0]['battery'])) ? 'value="' . $product['electricals'][0]['battery'] . '"' : 'placeholder="Battery"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Head Lamp</label>
+                        <div class="col-md-6">
+                            <?php echo $this->Form->input(
+                                'Electrical.head_lamp',
+                                array('class' => 'form-control', 'label' => false, (!empty($product['electricals'][0]['head_lamp'])) ? 'value="' . $product['electricals'][0]['head_lamp'] . '"' : 'placeholder="Head Lamp"', 'required' => false)
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions fluid">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn red">Submit</button>
+                        <button type="button" class="btn default">Cancel</button>
+                    </div>
+                </div>
+                <?php echo $this->Form->end(); ?>
+                <!-- END FORM-->
+            </div>
+        </div>
+        <!-- END TABLE PORTLET-->
+    </div>
+
 </div>

@@ -209,9 +209,13 @@ return function (RouteBuilder $routes): void {
         // accessories
         $builder->connect('/accessories/all_list', ['controller' => 'Accessories', 'action' => 'allList']);
         $builder->connect('/accessories/add', ['controller' => 'Accessories', 'action' => 'add']);
+        $builder->connect('/accessories/edit/{id}', ['controller' => 'Accessories', 'action' => 'edit'])->setPass(['id']);
+        $builder->connect('/accessories/delete/{id}', ['controller' => 'Accessories', 'action' => 'delete'])->setPass(['id']);
 
         // accessory_types
-        $builder->connect('/accessory_types/all_list', ['controller' => 'Accessories', 'action' => 'allList']);
+        $builder->connect('/accessory_types/all_list', ['controller' => 'AccessoryTypes', 'action' => 'allList']);
+        $builder->connect('/accessory_types/add', ['controller' => 'AccessoryTypes', 'action' => 'add']);
+        $builder->connect('/accessory_types/edit/{id}', ['controller' => 'AccessoryTypes', 'action' => 'edit'])->setPass(['id']);
 
 
 

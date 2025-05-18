@@ -13,7 +13,7 @@
         <div class="portlet box blue">
             <div class="portlet-title">
                 <div class="caption">
-                    <?= empty($accessory->id) ? __('Add New Accessory') : __('Edit Accessory') ?>
+                    <?= __('Edit Accessory') ?>
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse"></a>
@@ -23,7 +23,12 @@
 
             <div class="portlet-body form">
 
-                <?= $this->Form->create(null, ['type' => 'file', 'url' => ['enctype' => 'multipart/form-data', 'controller' => 'Accessories', 'action' => 'add'], 'class' => 'form-horizontal']) ?>
+                <?= $this->Form->create($accessory, [
+                    'type' => 'file',
+                    'url' => ['controller' => 'Accessories', 'action' => 'edit', $accessory->id],
+                    'class' => 'form-horizontal',
+                    'enctype' => 'multipart/form-data'
+                ]) ?>
 
                 <div class="form-body">
 
@@ -70,11 +75,16 @@
                     <div class="form-group">
                         <?= $this->Form->label('temp_image', __('Image'), ['class' => 'col-md-4 control-label']) ?>
                         <div class="col-md-6">
+                            <?php if (!empty($accessory->image)) : ?>
+                                <p>
+                                    <img src="<?= $this->Url->build('/assets/public/images/accessories/' . $accessory->image) ?>" width="100">
+                                </p>
+                            <?php endif; ?>
                             <?= $this->Form->control('temp_image', [
                                 'type' => 'file',
                                 'label' => false,
                                 'class' => 'form-control',
-                                'required' => empty($accessory->image)
+                                'required' => false
                             ]) ?>
                         </div>
                     </div>
@@ -101,29 +111,28 @@
                                 'placeholder' => 'Accessory Price',
                                 'required' => false,
                                 'type' => 'number'
+
                             ]) ?>
                         </div>
                     </div>
 
-                    <?php if (isset($accessory->status)) : ?>
-                        <div class="form-group">
-                            <?= $this->Form->label('status', __('Status'), ['class' => 'col-md-4 control-label']) ?>
-                            <div class="col-md-6">
-                                <?= $this->Form->control('status', [
-                                    'type' => 'select',
-                                    'options' => [1 => 'Active', 0 => 'Inactive'],
-                                    'empty' => '-- Select Status --',
-                                    'label' => false,
-                                    'class' => 'form-control'
-                                ]) ?>
-                            </div>
+                    <div class="form-group">
+                        <?= $this->Form->label('status', __('Status'), ['class' => 'col-md-4 control-label']) ?>
+                        <div class="col-md-6">
+                            <?= $this->Form->control('status', [
+                                'type' => 'select',
+                                'options' => [1 => 'Active', 0 => 'Inactive'],
+                                'empty' => '-- Select Status --',
+                                'label' => false,
+                                'class' => 'form-control'
+                            ]) ?>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
 
                 <div class="form-actions fluid">
                     <div class="col-md-offset-3 col-md-9">
-                        <button type="submit" class="btn blue"><?= __('Submit') ?></button>
+                        <button type="submit" class="btn blue"><?= __('Update') ?></button>
                         <a href="<?= $this->Url->build(['action' => 'allList']) ?>" class="btn default"><?= __('Cancel') ?></a>
                     </div>
                 </div>

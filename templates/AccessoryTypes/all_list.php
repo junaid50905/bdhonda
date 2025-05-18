@@ -28,7 +28,7 @@
                     <tbody id="sortable">
                     <?php $i=1; foreach($accessory_types as $accessory_type): ?>
                         <tr id="<?php echo $accessory_type['id']; ?>">
-                            <td><?php echo $i; ?></td><td><?php echo $accessory_type['name']; ?></td><td><?php echo $this->Html->link('Edit', '/accessory_types/add/'.$accessory_type['id'], array('class' => array('btn', 'green'))); ?></td>
+                            <td><?php echo $i; ?></td><td><?php echo $accessory_type['name']; ?></td><td><?php echo $this->Html->link('Edit', '/accessory_types/edit/'.$accessory_type['id'], array('class' => array('btn', 'green'))); ?></td>
                         </tr>
                     <?php $i++; endforeach; ?>
                     </tbody>

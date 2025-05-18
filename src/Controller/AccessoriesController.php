@@ -149,4 +149,82 @@ class AccessoriesController extends Controller
 
         $this->set(compact('accessory', 'products', 'accessory_types'));
     }
+
+
+    public function edit($id = null)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit Accessory');
+
+        $productsTable = $this->getTableLocator()->get('Products');
+        $accessoryTypesTable = $this->getTableLocator()->get('AccessoryTypes');
+        $accessoriesTable = $this->getTableLocator()->get('Accessories');
+
+        $products = $productsTable->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name'
+        ])->toArray();
+
+        $accessory_types = $accessoryTypesTable->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'name'
+        ])->toArray();
+
+        $accessory = $accessoriesTable->get($id);
+
+        if ($this->request->is(['post', 'put', 'patch'])) {
+            $data = $this->request->getData();
+
+            // Handle image upload
+            if (!empty($data['temp_image']) && $data['temp_image']->getError() === UPLOAD_ERR_OK) {
+                $image = $data['temp_image'];
+                $imageName = Text::uuid() . '-' . $image->getClientFilename();
+                $targetPath = WWW_ROOT . 'assets/public/images/accessories/' . $imageName;
+
+                // Ensure directory exists
+                if (!file_exists(dirname($targetPath))) {
+                    mkdir(dirname($targetPath), 0775, true);
+                }
+
+                $image->moveTo($targetPath);
+                $data['image'] = $imageName;
+            }
+
+            unset($data['temp_image']);
+
+            $accessory = $accessoriesTable->patchEntity($accessory, $data);
+
+            if ($accessoriesTable->save($accessory)) {
+                $this->Flash->success(__('Accessory updated successfully.'));
+                return $this->redirect(['action' => 'allList']);
+            } else {
+                $this->Flash->error(__('Failed to update accessory.'));
+            }
+        }
+
+        $this->set(compact('accessory', 'products', 'accessory_types'));
+    }
+
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        $accessory = $this->Accessories->get($id);
+
+        // Delete image from folder if it exists
+        if (!empty($accessory->image)) {
+            $imagePath = WWW_ROOT . 'assets/public/images/accessories/' . $accessory->image;
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        if ($this->Accessories->delete($accessory)) {
+            $this->Flash->success(__('The accessory has been deleted.'));
+        } else {
+            $this->Flash->error(__('The accessory could not be deleted. Please, try again.'));
+        }
+
+        return $this->redirect(['action' => 'allList']);
+    }
 }

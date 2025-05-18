@@ -14,11 +14,16 @@ use Cake\Datasource\ConnectionManager;
 class DealersController extends AppController
 {
     protected $District;
+    protected $Upazila;
+    protected $Dealers;
 
     public function initialize(): void
     {
         parent::initialize();
         $this->District = TableRegistry::getTableLocator()->get('districts');
+        $this->Upazila = TableRegistry::getTableLocator()->get('upazilas');
+        $this->Dealers = TableRegistry::getTableLocator()->get('dealers');
+        $this->loadComponent('Flash');
     }
 
 
@@ -64,6 +69,7 @@ class DealersController extends AppController
         $this->viewBuilder()->setLayout('admin_layout');
         $this->set('page_title', 'Add new dealer');
 
+
         $DivisionsTable = $this->fetchTable('Divisions');
 
         // Fetch the divisions as an array (id => name)
@@ -74,6 +80,45 @@ class DealersController extends AppController
         ])->toArray();
 
         $this->set(compact('divisions'));
+    }
+
+    // src/Controller/DealersController.php
+
+    public function getDistricts()
+    {
+        $this->request->allowMethod(['ajax']);
+        $divisionId = $this->request->getQuery('division_id');
+
+        // Access the Districts table without using loadModel
+        $districtsTable = TableRegistry::getTableLocator()->get('Districts');
+
+        $districts = $districtsTable
+            ->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+            ->where(['division_id' => $divisionId])
+            ->toArray();
+
+        $this->response = $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($districts));
+        return $this->response;
+    }
+    public function getUpazilas()
+    {
+        $this->request->allowMethod(['ajax']);
+        $districtId = $this->request->getQuery('district_id');
+
+        // Fix spelling: Upazilas
+        $upazilaTable = TableRegistry::getTableLocator()->get('Upazilas');
+
+        $upazilas = $upazilaTable
+            ->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+            ->where(['district_id' => $districtId])
+            ->toArray();
+
+        $this->response = $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($upazilas));
+        return $this->response;
     }
 
     public function addDistrict()
@@ -117,9 +162,45 @@ class DealersController extends AppController
 
     public function addUpazila()
     {
-        $this->viewBuilder()->setLayout('admin_layout');
-        $this->set('page_title', 'Add new district');
 
+        $upazila = $this->Upazila->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            $upazila = $this->Upazila->patchEntity($upazila, $data);
+
+            if ($this->Upazila->save($upazila)) {
+                $this->Flash->success(__('Upazila has been saved successfully.'));
+                return $this->redirect($this->referer());
+            } else {
+                $this->Flash->error(__('Unable to add upazila. Please try again.'));
+            }
+        }
+
+        $this->set(compact('upazila'));
+    }
+
+    public function addDealer()
+    {
+
+        $dealer = $this->Dealers->newEmptyEntity();
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+            dd($data);
+
+            $upazila = $this->Upazila->patchEntity($upazila, $data);
+
+            if ($this->Upazila->save($upazila)) {
+                $this->Flash->success(__('Upazila has been saved successfully.'));
+                return $this->redirect($this->referer());
+            } else {
+                $this->Flash->error(__('Unable to add upazila. Please try again.'));
+            }
+        }
+
+        $this->set(compact('upazila'));
     }
 
     public function ajaxDistrictsByDivision($divisionId)

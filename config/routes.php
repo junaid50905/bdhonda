@@ -178,9 +178,10 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/dealers/add_district', ['controller' => 'Dealers', 'action' => 'addDistrict']);
         $builder->connect('/dealers/add_upazila', ['controller' => 'Dealers', 'action' => 'addUpazila']);
         $builder->connect('/dealers/add_dealer', ['controller' => 'Dealers', 'action' => 'addDealer']);
-        $builder->connect('/dealers/ajaxDistrictsByDivision/{divisionId}', ['controller' => 'Dealers', 'action' => 'ajaxDistrictsByDivision'])
-            ->setPass(['divisionId'])
-            ->setMethods(['GET']);
+        $builder->connect('/dealers/edit/{id}', ['controller' => 'Dealers', 'action' => 'edit'])->setPass(['id']);
+        // $builder->connect('/dealers/ajaxDistrictsByDivision/{divisionId}', ['controller' => 'Dealers', 'action' => 'ajaxDistrictsByDivision'])
+        //     ->setPass(['divisionId'])
+        //     ->setMethods(['GET']);
 
         // dependancy dropdown
         $builder->connect('/get-districts', ['controller' => 'Dealers', 'action' => 'getDistricts']);

@@ -181,27 +181,125 @@ class DealersController extends AppController
         $this->set(compact('upazila'));
     }
 
+    // public function addDealer()
+    // {
+
+    //     $dealer = $this->Dealers->newEmptyEntity();
+
+    //     if ($this->request->is('post')) {
+    //         $data = $this->request->getData();
+    //         dd($data);
+
+
+    //     }
+
+    // }
+
     public function addDealer()
     {
-
         $dealer = $this->Dealers->newEmptyEntity();
 
         if ($this->request->is('post')) {
             $data = $this->request->getData();
-            dd($data);
 
-            $upazila = $this->Upazila->patchEntity($upazila, $data);
+            // Handle image upload
+            if (!empty($data['temp_image']) && $data['temp_image']->getClientFilename()) {
+                $image = $data['temp_image'];
+                $imageName = time() . '_' . $image->getClientFilename();
+                $targetPath = WWW_ROOT . 'assets/public/images/network/dealers/' . $imageName;
 
-            if ($this->Upazila->save($upazila)) {
-                $this->Flash->success(__('Upazila has been saved successfully.'));
-                return $this->redirect($this->referer());
+                // Move uploaded file
+                $image->moveTo($targetPath);
+
+                // Save image name in DB
+                $data['photo'] = $imageName;
+                $data['created'] = date('Y-m-d H:i:s');
+            }
+
+            // Remove temp_image from data before saving
+            unset($data['temp_image']);
+
+            $dealer = $this->Dealers->patchEntity($dealer, $data);
+
+            if ($this->Dealers->save($dealer)) {
+                $this->Flash->success(__('Dealer has been saved.'));
+                return $this->redirect(['action' => 'allList']);
             } else {
-                $this->Flash->error(__('Unable to add upazila. Please try again.'));
+                $this->Flash->error(__('Unable to save dealer. Please try again.'));
             }
         }
 
-        $this->set(compact('upazila'));
+        $this->set(compact('dealer'));
     }
+
+    public function edit($id = null)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit dealer');
+
+        $dealer = $this->Dealers->get($id);
+
+        if ($this->request->is(['post', 'put'])) {
+            $data = $this->request->getData();
+
+            // Handle image upload if new image is uploaded
+            if (!empty($data['temp_image']) && $data['temp_image']->getClientFilename()) {
+                $image = $data['temp_image'];
+                $imageName = time() . '_' . $image->getClientFilename();
+                $image->moveTo(WWW_ROOT . 'assets/public/images/network/dealers/' . $imageName);
+                $data['photo'] = $imageName;
+
+                // Optionally remove the old image
+                if (!empty($dealer->image) && file_exists(WWW_ROOT . 'assets/public/images/network/dealers/' . $dealer->image)) {
+                    unlink(WWW_ROOT . 'assets/public/images/network/dealers/' . $dealer->image);
+                }
+            } else {
+                unset($data['temp_image']); // prevent overwriting the image field
+            }
+
+            $dealer = $this->Dealers->patchEntity($dealer, $data);
+
+            if ($this->Dealers->save($dealer)) {
+                $this->Flash->success(__('Dealer has been updated successfully.'));
+                return $this->redirect(['action' => 'allList']);
+            }
+
+            $this->Flash->error(__('Unable to update dealer. Please try again.'));
+        }
+
+        $divisions = $this->Dealers->Divisions->find('list')->toArray();
+        $districts = $this->Dealers->Districts->find('list', ['conditions' => ['division_id' => $dealer->division_id]])->toArray();
+        $upazilas = $this->Dealers->Upazilas->find('list', ['conditions' => ['district_id' => $dealer->district_id]])->toArray();
+
+        $this->set(compact('dealer', 'divisions', 'districts', 'upazilas'));
+    }
+
+    public function delete($id = null)
+    {
+        $this->request->allowMethod(['post', 'delete']);
+
+        $dealer = $this->Dealers->get($id);
+
+        // Delete the image from server if exists
+        if (!empty($dealer->image)) {
+            $imagePath = WWW_ROOT . 'assets/public/images/network/dealers/' . $dealer->image;
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        if ($this->Dealers->delete($dealer)) {
+            $this->Flash->success(__('The dealer has been deleted.'));
+        } else {
+            $this->Flash->error(__('The dealer could not be deleted. Please try again.'));
+        }
+
+        return $this->redirect(['action' => 'allList']);
+    }
+
+
+
+
 
     public function ajaxDistrictsByDivision($divisionId)
     {

@@ -1,105 +1,10 @@
 <!-- templates/Dealers/add.php -->
 
 <div class="row">
-    <!-- District Form -->
-    <div class="col-md-6 col-sm-6">
-        <div class="portlet box blue">
-            <div class="portlet-title">
-                <div class="caption">Add New District</div>
-            </div>
-            <div class="portlet-body form">
-                <?= $this->Form->create(null, ['url' => ['controller' => 'Dealers', 'action' => 'addDistrict'], 'class' => 'form-horizontal']) ?>
-
-                <div class="form-body">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Division</label>
-                        <div class="col-md-6">
-                            <?= $this->Form->control('division_id', [
-                                'label' => false,
-                                'class' => 'form-control',
-                                'options' => $divisions,
-                                'empty' => 'Select Division',
-                                'required' => true
-                            ]) ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">District</label>
-                        <div class="col-md-6">
-                            <?= $this->Form->control('name', [
-                                'label' => false,
-                                'class' => 'form-control',
-                                'placeholder' => 'District Name',
-                                'required' => true
-                            ]) ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-actions fluid">
-                    <div class="col-md-offset-3 col-md-9">
-                        <button type="submit" class="btn blue">Submit</button>
-                    </div>
-                </div>
-                <?= $this->Form->end() ?>
-            </div>
-        </div>
-    </div>
-
-    <!-- Upazila Form -->
-    <div class="col-md-6 col-sm-6">
-        <div class="portlet box blue">
-            <div class="portlet-title">
-                <div class="caption">Add New Upazila</div>
-            </div>
-            <div class="portlet-body form">
-                <?= $this->Form->create(null, ['url' => ['controller' => 'Dealers', 'action' => 'addUpazila'], 'class' => 'form-horizontal']) ?>
-                <div class="form-body">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Division</label>
-                        <div class="col-md-6">
-                            <?= $this->Form->control('division_id', [
-                                'type' => 'select',
-                                'options' => $divisions,
-                                'empty' => 'Select Division',
-                                'label' => false,
-                                'id' => 'division_id',
-                                'class' => 'form-control'
-                            ]) ?>
-
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">District</label>
-                        <div class="col-md-6">
-                            <select id="district_id" name="district_id" class="form-control" required>
-                                <option value="">Select District</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Upazila</label>
-                        <div class="col-md-6">
-                            <?= $this->Form->control('name', [
-                                'label' => false,
-                                'class' => 'form-control',
-                                'placeholder' => 'Upazila Name',
-                                'required' => true
-                            ]) ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-actions fluid">
-                    <div class="col-md-offset-3 col-md-9">
-                        <button type="submit" class="btn blue">Submit</button>
-                    </div>
-                </div>
-                <?= $this->Form->end() ?>
-            </div>
-        </div>
-    </div>
 
 
-    <!-- Dealer Form -->
+
+    <!-- Edit Dealer Form -->
     <div class="col-md-12 col-sm-12">
         <?= $this->Html->link(
             'All Dealers/Parts Providers',
@@ -107,16 +12,18 @@
             ['class' => 'btn blue pull-right']
         ) ?>
         <div class="clearfix"></div><br>
+
         <div class="portlet box blue">
             <div class="portlet-title">
-                <div class="caption">Add New Dealer/Parts Provider</div>
+                <div class="caption">Edit Dealer/Parts Provider</div>
             </div>
             <div class="portlet-body form">
-                <?= $this->Form->create(null, [
-                    'url' => ['controller' => 'Dealers', 'action' => 'addDealer'],
+                <?= $this->Form->create($dealer, [
+                    'url' => ['controller' => 'Dealers', 'action' => 'edit', $dealer->id],
                     'type' => 'file',
                     'class' => 'form-horizontal'
                 ]) ?>
+
                 <div class="form-body">
 
                     <div class="form-group">
@@ -225,7 +132,7 @@
                             ); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="col-md-4 control-label text-center">Dealer Shop Photo</label>
                         <div class="col-md-6">
@@ -237,15 +144,18 @@
                     </div>
 
                 </div>
+
                 <div class="form-actions fluid">
                     <div class="col-md-offset-3 col-md-9">
-                        <button type="submit" class="btn blue">Submit</button>
+                        <button type="submit" class="btn blue">Update</button>
                     </div>
                 </div>
+
                 <?= $this->Form->end() ?>
             </div>
         </div>
     </div>
+
 
 </div>
 

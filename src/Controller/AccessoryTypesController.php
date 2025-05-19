@@ -33,6 +33,7 @@ class AccessoryTypesController extends Controller
             ->all();
         $this->set('accessory_types', $accessoryTypes);
     }
+    
     public function add()
     {
         $this->viewBuilder()->setLayout('admin_layout');

@@ -284,9 +284,15 @@
                 </div>
                 <!-- END PAGE HEADER-->
                 <div class="row">
-                    <div class="col-lg-12">
-                        <?= $this->Flash->render(); ?>
-                    </div>
+                    <?php $flashMessage = $this->Flash->render(); ?>
+                    <?php if (!empty($flashMessage)): ?>
+                        <div class="col-lg-12">
+                            <div class="alert alert-success flash-msg">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <?= $flashMessage ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <?= $this->fetch('content'); ?>

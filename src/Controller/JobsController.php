@@ -9,6 +9,12 @@ use Cake\ORM\TableRegistry;
 class JobsController extends AppController
 {
 
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('Flash');
+    }
+
 
 
     public function view($id = null)
@@ -34,13 +40,18 @@ class JobsController extends AppController
 
     public function add()
     {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Add new job');
+
         $job = $this->Jobs->newEmptyEntity();
+
         if ($this->request->is('post')) {
             $job = $this->Jobs->patchEntity($job, $this->request->getData());
+            
             if ($this->Jobs->save($job)) {
                 $this->Flash->success(__('The job has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'allList']);
             }
             $this->Flash->error(__('The job could not be saved. Please, try again.'));
         }

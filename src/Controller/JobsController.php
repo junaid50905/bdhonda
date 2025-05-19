@@ -32,8 +32,7 @@ class JobsController extends AppController
         $this->viewBuilder()->setLayout('admin_layout');
         $this->set('page_title', 'Jobs');
 
-        $query = $this->Jobs->find();
-        $jobs = $this->paginate($query);
+        $jobs = $this->Jobs->find();
 
         $this->set(compact('jobs'));
     }
@@ -46,7 +45,9 @@ class JobsController extends AppController
         $job = $this->Jobs->newEmptyEntity();
 
         if ($this->request->is('post')) {
-            $job = $this->Jobs->patchEntity($job, $this->request->getData());
+            $data = $this->request->getData();
+            $data['created'] = date('Y-m-d H:i:s'); // Set the created datetime
+            $job = $this->Jobs->patchEntity($job, $data);
             
             if ($this->Jobs->save($job)) {
                 $this->Flash->success(__('The job has been saved.'));
@@ -55,8 +56,32 @@ class JobsController extends AppController
             }
             $this->Flash->error(__('The job could not be saved. Please, try again.'));
         }
+
         $this->set(compact('job'));
     }
+
+
+    public function edit($id = null)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit Job');
+
+        $job = $this->Jobs->get($id);
+
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $job = $this->Jobs->patchEntity($job, $this->request->getData());
+
+            if ($this->Jobs->save($job)) {
+                $this->Flash->success(__('The job has been updated.'));
+
+                return $this->redirect(['action' => 'allList']);
+            }
+            $this->Flash->error(__('The job could not be updated. Please, try again.'));
+        }
+
+        $this->set(compact('job'));
+    }
+
 
     public function applicantList()
     {
@@ -87,20 +112,8 @@ class JobsController extends AppController
         $this->set('job_titles', $jobTitles);
     }
 
-    public function edit($id = null)
-    {
-        $job = $this->Jobs->get($id, contain: []);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $job = $this->Jobs->patchEntity($job, $this->request->getData());
-            if ($this->Jobs->save($job)) {
-                $this->Flash->success(__('The job has been saved.'));
+    
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The job could not be saved. Please, try again.'));
-        }
-        $this->set(compact('job'));
-    }
 
 
     public function delete($id = null)

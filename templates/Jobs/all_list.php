@@ -46,7 +46,7 @@
                                     <div class="btn-group btn-group-solid">
                                         <?= $this->Html->link(
                                             'Edit',
-                                            ['controller' => 'Jobs', 'action' => 'add', $job['id']],
+                                            ['controller' => 'Jobs', 'action' => 'edit', $job['id']],
                                             ['class' => 'btn yellow']
                                         ) ?>
                                     </div>

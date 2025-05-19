@@ -169,6 +169,7 @@ return function (RouteBuilder $routes): void {
         // jobs
         $builder->connect('/jobs/all_list', ['controller' => 'Jobs', 'action' => 'allList']);
         $builder->connect('/jobs/add', ['controller' => 'Jobs', 'action' => 'add']);
+        $builder->connect('/jobs/edit/{id}', ['controller' => 'Jobs', 'action' => 'edit'])->setPass(['id']);
         $builder->connect('/jobs/applicant_list', ['controller' => 'Jobs', 'action' => 'applicantList']);
 
 

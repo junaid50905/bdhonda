@@ -18,9 +18,8 @@
             </div>
             <div class="portlet-body form">
                 <!-- BEGIN FORM-->
-                <?= $this->Form->create($slider, ['type' => 'file', 'url' => ['enctype' => 'multipart/form-data', 'controller' => 'Sliders', 'action' => 'add'], 'class' => 'form-horizontal', 'id' => 'pressReleaseForm']) ?>
+                <?= $this->Form->create(null, ['type' => 'file', 'url' => ['enctype' => 'multipart/form-data', 'controller' => 'Sliders', 'action' => 'add'], 'class' => 'form-horizontal', 'id' => 'pressReleaseForm']) ?>
 
-                <?= $this->Form->hidden('id', ['value' => $slider->id ?? null]) ?>
 
                 <div class="form-body">
                     <div class="form-group">
@@ -30,7 +29,6 @@
                                 'class' => 'form-control',
                                 'label' => false,
                                 'placeholder' => 'Title',
-                                'value' => $slider->title ?? '',
                                 'required' => false
                             ]) ?>
                         </div>
@@ -41,7 +39,7 @@
                             <?= $this->Form->file('image', [
                                 'class' => 'form-control',
                                 'label' => false,
-                                'required' => empty($slider->image)
+                                'required' => true
                             ]) ?>
                         </div>
                     </div>
@@ -52,26 +50,11 @@
                                 'class' => 'form-control',
                                 'label' => false,
                                 'placeholder' => 'Slider Link',
-                                'value' => $slider->url ?? '',
                                 'required' => false
                             ]) ?>
                         </div>
                     </div>
-                    <?php if (isset($slider->status)): ?>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Slider Status</label>
-                            <div class="col-md-6">
-                                <?= $this->Form->control('status', [
-                                    'type' => 'select',
-                                    'class' => 'form-control',
-                                    'label' => false,
-                                    'empty' => '-- Select Status --',
-                                    'options' => [1 => 'Active', 0 => 'Inactive'],
-                                    'default' => $slider->status
-                                ]) ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+                    
                 </div>
                 <div class="form-actions fluid">
                     <div class="col-md-offset-3 col-md-9">

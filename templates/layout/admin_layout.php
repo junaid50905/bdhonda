@@ -288,6 +288,7 @@
                         <?= $this->Flash->render(); ?>
                     </div>
                 </div>
+
                 <?= $this->fetch('content'); ?>
             </div>
         </div>

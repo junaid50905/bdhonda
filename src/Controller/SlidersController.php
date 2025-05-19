@@ -176,46 +176,6 @@ class SlidersController extends AppController
     //     $this->set(compact('slider'));
     // }
 
-    public function edit($id)
-    {
-        $this->viewBuilder()->setLayout('admin_layout');
-        $this->set('page_title', 'Edit Slider');
-
-        // Fetch the slider data from the database
-        $slider = $this->Sliders->get($id);
-
-        if ($this->request->is(['post', 'put'])) {
-
-            $updatedSliderData = $this->Sliders->patchEntity($slider, $this->request->getData());
-
-            $image = $this->request->getData('image');
-            if ($image) {
-                $imageName = time() . '-' . $image->getClientFilename();
-                $uploadPath = WWW_ROOT . 'assets/public/images/home-banner/' . $imageName;
-                $image->moveTo($uploadPath);
-                $slider->image = $imageName;
-
-                // Save the updated slider information
-                if ($this->Sliders->save($updatedSliderData)) {
-                    $this->Flash->success('The slider has been updated.');
-                    return $this->redirect(['action' => 'allList']);
-                }
-                $this->Flash->error(__('Unable to update the slider.'));
-            }else{
-                // Save the updated slider information
-                if ($this->Sliders->save($updatedSliderData)) {
-                    $this->Flash->success('The slider has been updated.');
-                    return $this->redirect(['action' => 'allList']);
-                }
-                $this->Flash->error(__('Unable to update the slider.'));
-            }
-
-
-        }
-
-        $this->set(compact('slider'));
-    }
-
     // public function edit($id)
     // {
     //     $this->viewBuilder()->setLayout('admin_layout');
@@ -226,29 +186,116 @@ class SlidersController extends AppController
 
     //     if ($this->request->is(['post', 'put'])) {
 
-    //         $updatedSliderData =  $this->request->getData();
+    //         $updatedSliderData = $this->Sliders->patchEntity($slider, $this->request->getData());
 
     //         $image = $this->request->getData('image');
-
-    //         if ($image && !$image->getError()) {
+    //         if ($image) {
     //             $imageName = time() . '-' . $image->getClientFilename();
     //             $uploadPath = WWW_ROOT . 'assets/public/images/home-banner/' . $imageName;
     //             $image->moveTo($uploadPath);
-    //             $updatedSliderData->image = $imageName;
-    //         } else {
-    //             unset($updatedSliderData->image);
+    //             $slider->image = $imageName;
+
+    //             // Save the updated slider information
+    //             if ($this->Sliders->save($updatedSliderData)) {
+    //                 $this->Flash->success('The slider has been updated.');
+    //                 return $this->redirect(['action' => 'allList']);
+    //             }
+    //             $this->Flash->error(__('Unable to update the slider.'));
+    //         }else{
+    //             // Save the updated slider information
+    //             if ($this->Sliders->save($updatedSliderData)) {
+    //                 $this->Flash->success('The slider has been updated.');
+    //                 return $this->redirect(['action' => 'allList']);
+    //             }
+    //             $this->Flash->error(__('Unable to update the slider.'));
     //         }
 
-    //         if ($this->Sliders->save($updatedSliderData)) {
-    //             $this->Flash->success('The slider has been updated.');
-    //             return $this->redirect(['action' => 'allList']);
-    //         }
 
-    //         $this->Flash->error(__('Unable to update the slider.'));
     //     }
 
     //     $this->set(compact('slider'));
     // }
+
+    // public function edit($id)
+    // {
+    //     $this->viewBuilder()->setLayout('admin_layout');
+    //     $this->set('page_title', 'Edit Slider');
+
+    //     $dealer = $this->Sliders->get($id);
+
+    //     if ($this->request->is(['post', 'put'])) {
+    //         $data = $this->request->getData();
+
+    //         dd($data);
+
+    //         // Handle image upload if new image is uploaded
+    //         if (!empty($data['temp_image']) && $data['temp_image']->getClientFilename()) {
+    //             $image = $data['temp_image'];
+    //             $imageName = time() . '_' . $image->getClientFilename();
+    //             $image->moveTo(WWW_ROOT . 'assets/public/images/network/dealers/' . $imageName);
+    //             $data['photo'] = $imageName;
+
+    //             // Optionally remove the old image
+    //             if (!empty($dealer->image) && file_exists(WWW_ROOT . 'assets/public/images/network/dealers/' . $dealer->image)) {
+    //                 unlink(WWW_ROOT . 'assets/public/images/network/dealers/' . $dealer->image);
+    //             }
+    //         } else {
+    //             unset($data['temp_image']); // prevent overwriting the image field
+    //         }
+
+    //         $dealer = $this->Dealers->patchEntity($dealer, $data);
+
+    //         if ($this->Dealers->save($dealer)) {
+    //             $this->Flash->success(__('Dealer has been updated successfully.'));
+    //             return $this->redirect(['action' => 'allList']);
+    //         }
+
+    //         $this->Flash->error(__('Unable to update dealer. Please try again.'));
+    //     }
+
+    //     $this->set(compact('slider'));
+    // }
+
+
+    public function edit($id)
+    {
+        $this->viewBuilder()->setLayout('admin_layout');
+        $this->set('page_title', 'Edit Slider');
+
+        // Fetch the slider data from the database
+        $slider = $this->Sliders->get($id);
+
+        if ($this->request->is(['post', 'put'])) {
+            $data = $this->request->getData();
+
+            // Handle image upload if new image is uploaded
+            if (!empty($data['image']) && $data['image']->getClientFilename()) {
+                $image = $data['image'];
+                $imageName = time() . '_' . $image->getClientFilename();
+                $image->moveTo(WWW_ROOT . 'assets/public/images/home-banner/' . $imageName);
+                $data['image'] = $imageName;
+
+                // Optionally remove the old image
+                if (!empty($slider->image) && file_exists(WWW_ROOT . 'assets/public/images/home-banner/' . $slider->image)) {
+                    unlink(WWW_ROOT . 'assets/public/images/home-banner/' . $slider->image);
+                }
+            } else {
+                unset($data['image']); 
+            }
+
+            $slider = $this->Sliders->patchEntity($slider, $data);
+
+            if ($this->Sliders->save($slider)) {
+                $this->Flash->success(__('Slider has been updated successfully.'));
+                return $this->redirect(['action' => 'allList']);
+            }
+
+            $this->Flash->error(__('Unable to update slider. Please try again.'));
+        }
+
+
+        $this->set(compact('slider'));
+    }
 
 
 

@@ -195,27 +195,27 @@
                     } else {
                         $.each(dealers, function(index, dealer) {
                             html += `
-                    <div class="row">
-                        <div class="repeat-dealor">
-                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                <h4><label>Dealer Network:</label> ${dealer.name}</h4>
-                                <div style="border:2px solid #fff; margin-bottom:10px; width:250px; height:auto;">
-                                    <img src="/honda/assets/public/images/network/dealers/${dealer.photo}" style="width:100%; height:auto;">
-                                </div>
-                                <span>${dealer.name}</span>
-                                <p>${dealer.address}</p>
-                                <div class="repeat-dealor-height">
-                                    <i class="fa fa-user"></i> ${dealer.owner_name}<br>
-                                    <i class="fa fa-phone"></i> ${dealer.phone}<br>
-                                    <i class="fa fa-envelope"></i> <a href="mailto:${dealer.email}">${dealer.email}</a>
+                            <div class="row">
+                                <div class="repeat-dealor">
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                        <h4><label>Dealer Network:</label> ${dealer.name}</h4>
+                                        <div style="border:2px solid #fff; margin-bottom:10px; width:250px; height:auto;">
+                                            <img src="/honda/assets/public/images/network/dealers/${dealer.photo}" style="width:100%; height:auto;">
+                                        </div>
+                                        <span>${dealer.name}</span>
+                                        <p>${dealer.address}</p>
+                                        <div class="repeat-dealor-height">
+                                            <i class="fa fa-user"></i> ${dealer.owner_name}<br>
+                                            <i class="fa fa-phone"></i> ${dealer.phone}<br>
+                                            <i class="fa fa-envelope"></i> <a href="mailto:${dealer.email}">${dealer.email}</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 col-xs-12">
+                                        ${dealer.google_map}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-12 col-xs-12">
-                                ${dealer.google_map}
-                            </div>
-                        </div>
-                    </div>
-                `;
+                        `;
                         });
                     }
 
@@ -225,10 +225,6 @@
                     $('#dealer_result').html('<p>Error loading dealers</p>');
                 }
             });
-
-
         });
-
-
     });
 </script>

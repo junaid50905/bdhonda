@@ -43,11 +43,38 @@ class DealersController extends AppController
         $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
         $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
     }
+
+
     public function applyForDealership()
     {
         $this->set('page_title', 'Apply for Dealership');
         $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
         $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
+
+        $districtsTable = TableRegistry::getTableLocator()->get('Districts');
+        $districts = $districtsTable->find('list')->toArray();
+
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            // Get IP Address
+            $data['created_ip'] = $this->request->clientIp();
+
+            // Load DealerApplications Table
+            $dealerApplicationsTable = $this->fetchTable('DealerApplications');
+
+            // Create new entity
+            $dealerApplication = $dealerApplicationsTable->newEntity($data);
+
+            // Save the application
+            if ($dealerApplicationsTable->save($dealerApplication)) {
+                return $this->redirect(['action' => 'applyForDealership']);
+            } else {
+                $this->Flash->error('There was an error submitting your application. Please try again.');
+            }
+        }
+
+        $this->set(compact('districts'));
     }
 
     /**

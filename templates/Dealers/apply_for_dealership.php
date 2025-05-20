@@ -159,64 +159,60 @@
                     <div class="col-md-8 col-sm-12 col-xs-12">
                         <div class="row">
                             <!-- BEGIN FORM-->
-                            <form id="DealerApplication" action="/dealers/apply_for_dealership" method="post">
-                                <div class="form-left-box rech-us-box">
-                                    <input type="hidden" name="data[test][key2]" value="" id="">
-                                    <div class="text-center">
-                                        <h3>Register for Dealer Application Form</h3>
-                                    </div>
-                                    <br>
-                                    <input type="hidden" name="data[DealerApplication][created_ip]" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
+                            <?= $this->Form->create(null, [
+                                'url' => ['controller' => 'Dealers', 'action' => 'applyForDealership'],
+                                'type' => 'file',
+                                'class' => 'form-horizontal'
+                            ]) ?>
+                            <div class="form-left-box rech-us-box">
+                                <div class="text-center">
+                                    <h3>Register for Dealer Application Form</h3>
+                                </div>
+                                <br>
+                                <input type="hidden" name="created_ip" value="<?php echo $_SERVER['REMOTE_ADDR']; ?>">
 
-                                    <div style="margin-top: 15px;"></div>
-                                    <div class="form-inline">
-                                        <div class="col-md-12 col-sm-5 col-sm-12">
-                                            <input type="text" name="data[DealerApplication][name]" class="form-control" placeholder="Name *" required>
-                                        </div>
-                                    </div>
-                                    <div class="form-inline">
-                                        <div class="col-md-12 col-sm-5 col-xs-12">
-                                            <input type="text" name="data[DealerApplication][mobile]" class="form-control" placeholder="Mobile Number *" required>
-                                            <div class="info-message">11 digit number (01XXXXXXXXX)</div>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="form-inline">
-                                        <div class="col-md-12 col-sm-5 col-xs-12">
-                                            <input type="email" name="data[DealerApplication][email]" class="form-control" placeholder="E-mail ID" required>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="form-inline">
-                                        <div class="col-md-12 col-sm-5">
-                                            <select name="data[DealerApplication][district_id]" class="form-control" id="allDistrictList" required>
-                                                <option value="">Select District</option>
-                                                <!-- Dynamically load districts here -->
-                                                <?php foreach ($districts as $districtId => $districtName): ?>
-                                                    <option value="<?= $districtId ?>"><?= $districtName ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-12 col-sm-5">
-                                            <div id="locationdiv">
-                                                <select name="data[DealerApplication][upazila_id]" class="form-control" id="upazilaList" required>
-                                                    <option value="">Select Thana/Upazila</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-12 col-sm-8 col-xs-12">
-                                            <div class="g-recaptcha" data-sitekey="YOUR_RECAPTCHA_SITE_KEY"></div>
-                                            <script src="https://www.google.com/recaptcha/api.js"></script>
-                                            <br>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 col-sm-8 col-xs-12">
-                                        <button type="submit" class="btn blue pull-right">Submit</button>
+                                <div style="margin-top: 15px;"></div>
+                                <div class="form-inline">
+                                    <div class="col-md-12 col-sm-5 col-sm-12">
+                                        <input type="text" name="name" class="form-control" placeholder="Name *" required>
                                     </div>
                                 </div>
-                            </form>
+                                <div class="form-inline">
+                                    <div class="col-md-12 col-sm-5 col-xs-12">
+                                        <input type="text" name="mobile" class="form-control" placeholder="Mobile Number *" required>
+                                        <div class="info-message">11 digit number (01XXXXXXXXX)</div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-inline">
+                                    <div class="col-md-12 col-sm-5 col-xs-12">
+                                        <input type="email" name="email" class="form-control" placeholder="E-mail ID" required>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-inline">
+                                    <div class="col-md-12 col-sm-5">
+                                        <select name="district_id" class="form-control" id="dealer_district_id" required>
+                                            <option value="">Select District</option>
+                                            <!-- Dynamically load districts here -->
+                                            <?php foreach ($districts as $districtId => $districtName): ?>
+                                                <option value="<?= $districtId ?>"><?= $districtName ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12 col-sm-5">
+                                        <div id="locationdiv">
+                                            <select name="upazila_id" class="form-control" id="dealer_upazila_id" required>
+                                                <option value="">Select Thana/Upazila</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-8 col-xs-12">
+                                    <button type="submit" class="btn blue pull-right">Submit</button>
+                                </div>
+                            </div>
+                            <?= $this->Form->end() ?>
 
                             <!-- END FORM-->
                         </div>
@@ -228,3 +224,41 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/public/js/chosen.jquery.js" type="text/javascript"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        // Load upazilas when district changes
+        $('#dealer_district_id').change(function() {
+            var districtId = $(this).val();
+            $('#dealer_upazila_id').html('<option value="">Loading...</option>');
+
+            if (districtId) {
+                $.ajax({
+                    url: "<?= $this->Url->build('/get-upazilas') ?>",
+                    type: 'GET',
+                    data: {
+                        district_id: districtId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        let options = '<option value="">Select Upazila</option>';
+                        $.each(response, function(key, value) {
+                            options += `<option value="${key}">${value}</option>`;
+                        });
+                        $('#dealer_upazila_id').html(options);
+                    },
+                    error: function() {
+                        $('#dealer_upazila_id').html('<option value="">Error loading upazilas</option>');
+                    }
+                });
+            } else {
+                $('#dealer_upazila_id').html('<option value="">Select Upazila</option>');
+            }
+        });
+
+
+    });
+</script>

@@ -66,12 +66,13 @@ class QueriesController extends AppController
                 'mobile' => $data['mobile'],
                 'product_id' => $data['product_id'],
                 'color' => $data['color'],
-                'dealer_id' => $data['dealer_id']
+                'dealer_id' => $data['dealer_id'],
+                'created_ip' => $this->request->clientIp(),
             ]);
 
             if ($this->Queries->save($query)) {
                 // Query data saved
-                $this->Flash->success('Query submitted successfully!');
+                // $this->Flash->success('Query submitted successfully!');
                 return $this->redirect($this->referer());
 
             } else {
@@ -231,10 +232,13 @@ class QueriesController extends AppController
         $this->set('page_title', 'Queries');
 
         $queriesTable = TableRegistry::getTableLocator()->get('Queries');
+        
         $queries = $queriesTable->find()
             ->contain(['Dealers', 'Products'])
+            ->orderBy(['Queries.created' => 'DESC']) // or ['Queries.id' => 'DESC']
             ->limit(200)
             ->all();
+
         // dd($queries);
         $this->set(compact('queries'));
     }

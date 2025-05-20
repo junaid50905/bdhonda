@@ -8,7 +8,7 @@
             <div class="row p-3" style="justify-content: center;">
                 <br><br>
                 <div class="col-md-8 col-sm-6 col-xs-12">
-                    <?php echo $this->Form->create(null, ['controller' => 'queries']); ?>
+                    <?php echo $this->Form->create(null, ['controller' => 'Queries', 'action' => 'addQuery']); ?>
                     <div class="form-left-box rech-us-box">
                         <div class="text-center">
                             <h3><?php echo $productDetails['name'] ?> Enquiry form</h3>
@@ -19,7 +19,7 @@
 
                         <div class="form-group row g-3">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <select name="data[Query][color]" title="Select Color" required="required"
+                                <select name="color" title="Select Color" required="required"
                                     class="form-select my-select">
                                     <option>Select Color *</option>
                                     <?php foreach ($productDetails['colors'] as $color): ?>
@@ -66,7 +66,7 @@
                         <div class="clearfix"></div>
                         <div class="form-inline row g-3">
                             <div class="col-md-4 col-sm-4">
-                                <select class="form-select" id="divisionList" name="division">
+                                <select class="form-select" id="dealer_division_id" name="division">
                                     <option value="">Select Division</option>
                                     <?php foreach ($divisions as $key => $division): ?>
                                         <option value="<?php echo $key ?>"><?php echo $division ?></option>
@@ -74,20 +74,20 @@
                                 </select>
                             </div>
                             <div class="col-md-4 col-sm-4">
-                                <select name="district" id="districtList" class="form-select">
+                                <select name="district" id="dealer_district_id" class="form-select">
                                     <option value="">Select District</option>
                                 </select>
                             </div>
                             <div class="col-md-4 col-sm-4">
                                 <div id="locationdiv">
-                                    <select name="upazila" id="upazilaList" class="form-select dealerSearch">
+                                    <select name="upazila" id="dealer_upazila_id" class="form-select dealerSearch">
                                         <option value="">Select Thana/Upazila</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row pt-3">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <select name="data[Query][dealer_id]" id="dealer_result" title="Select Dealer"
+                                    <select name="dealer_id" id="dealer_id" title="Select Dealer"
                                         required="required" class="form-control">
                                         <option>Select Dealer *</option>
                                     </select>
@@ -101,7 +101,7 @@
                                     ); ?>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-12 col-sm-12">
                                 <button type="submit" class="btn blue pull-right">Submit</button>
                             </div>
@@ -114,6 +114,102 @@
         </div>
     </section>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+        // Load districts when division changes
+        $('#dealer_division_id').change(function() {
+            var divisionId = $(this).val();
+            $('#dealer_district_id').html('<option value="">Loading...</option>');
+            $('#dealer_upazila_id').html('<option value="">Select Upazila</option>');
+
+            if (divisionId) {
+                $.ajax({
+                    url: "<?= $this->Url->build('/get-districts') ?>",
+                    type: 'GET',
+                    data: {
+                        division_id: divisionId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        let options = '<option value="">Select District</option>';
+                        $.each(response, function(key, value) {
+                            options += `<option value="${key}">${value}</option>`;
+                        });
+                        $('#dealer_district_id').html(options);
+                    },
+                    error: function() {
+                        $('#dealer_district_id').html('<option value="">Error loading districts</option>');
+                    }
+                });
+            } else {
+                $('#dealer_district_id').html('<option value="">Select District</option>');
+            }
+        });
+
+        // Load upazilas when district changes
+        $('#dealer_district_id').change(function() {
+            var districtId = $(this).val();
+            $('#dealer_upazila_id').html('<option value="">Loading...</option>');
+
+            if (districtId) {
+                $.ajax({
+                    url: "<?= $this->Url->build('/get-upazilas') ?>",
+                    type: 'GET',
+                    data: {
+                        district_id: districtId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        let options = '<option value="">Select Upazila</option>';
+                        $.each(response, function(key, value) {
+                            options += `<option value="${key}">${value}</option>`;
+                        });
+                        $('#dealer_upazila_id').html(options);
+                    },
+                    error: function() {
+                        $('#dealer_upazila_id').html('<option value="">Error loading upazilas</option>');
+                    }
+                });
+            } else {
+                $('#dealer_upazila_id').html('<option value="">Select Upazila</option>');
+            }
+        });
+
+        // Load dealers when upazila changes
+        $('#dealer_upazila_id').change(function() {
+            var dealerUpazilaId = $(this).val();
+            $('#dealer_id').html('<option value="">Loading...</option>');
+
+            if (dealerUpazilaId) {
+                $.ajax({
+                    url: "<?= $this->Url->build('/get-dealers') ?>",
+                    type: 'GET',
+                    data: {
+                        upazila_id: dealerUpazilaId
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        let options = '<option value="">Select Dealer</option>';
+                        $.each(response, function(key, value) {
+                            options += `<option value="${key}">${value}</option>`;
+                        });
+                        $('#dealer_id').html(options);
+                    },
+                    error: function() {
+                        $('#dealer_id').html('<option value="">Error loading dealers</option>');
+                    }
+                });
+            } else {
+                $('#dealer_id').html('<option value="">Select Dealers</option>');
+            }
+        });
+
+    });
+</script>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="<?= $this->Url->build('/assets/public/js/chosen.jquery.js', ['fullBase' => true]); ?>" type="text/javascript"></script>

@@ -120,6 +120,25 @@ class DealersController extends AppController
             ->withStringBody(json_encode($upazilas));
         return $this->response;
     }
+    public function getDealers()
+    {
+        $this->request->allowMethod(['ajax']);
+        $upazilaId = $this->request->getQuery('upazila_id');
+
+        $dealersTable = TableRegistry::getTableLocator()->get('Dealers');
+
+        $dealers = $dealersTable
+            ->find('list', ['keyField' => 'id', 'valueField' => 'name'])
+            ->where(['upazila_id' => $upazilaId])
+            ->toArray();
+
+        $this->response = $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($dealers));
+
+        return $this->response;
+    }
+
 
     public function addDistrict()
     {
@@ -297,10 +316,6 @@ class DealersController extends AppController
         return $this->redirect(['action' => 'allList']);
     }
 
-
-
-
-
     public function ajaxDistrictsByDivision($divisionId)
     {
         return 'something';
@@ -322,11 +337,6 @@ class DealersController extends AppController
         // }
         // return;
     }
-
-
-
-
-
 
     public function allApplicationList()
     {

@@ -404,7 +404,7 @@
 
                 </div>
             </div>
-        </footer>
+        </footer>src="http://localhost:82/honda/assets/public/images/aamra-logo-black.png"
 
     </div>
 

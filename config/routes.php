@@ -187,6 +187,7 @@ return function (RouteBuilder $routes): void {
         // dependancy dropdown
         $builder->connect('/get-districts', ['controller' => 'Dealers', 'action' => 'getDistricts']);
         $builder->connect('/get-upazilas', ['controller' => 'Dealers', 'action' => 'getUpazilas']);
+        $builder->connect('/get-dealers', ['controller' => 'Dealers', 'action' => 'getDealers']);
 
 
 

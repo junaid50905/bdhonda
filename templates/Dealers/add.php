@@ -225,7 +225,7 @@
                             ); ?>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label class="col-md-4 control-label text-center">Dealer Shop Photo</label>
                         <div class="col-md-6">
@@ -252,6 +252,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
+        
         $('#division_id').change(function() {
             var divisionId = $(this).val();
             $('#district_id').html('<option value="">Loading...</option>');

@@ -20,6 +20,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <?php echo $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken'));  ?>
+
     <title><?php if (isset($page_title)) {
                 echo $page_title;
             } else {
@@ -404,7 +407,7 @@
 
                 </div>
             </div>
-        </footer>src="http://localhost:82/honda/assets/public/images/aamra-logo-black.png"
+        </footer>
 
     </div>
 

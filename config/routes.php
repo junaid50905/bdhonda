@@ -188,6 +188,7 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/get-districts', ['controller' => 'Dealers', 'action' => 'getDistricts']);
         $builder->connect('/get-upazilas', ['controller' => 'Dealers', 'action' => 'getUpazilas']);
         $builder->connect('/get-dealers', ['controller' => 'Dealers', 'action' => 'getDealers']);
+        $builder->connect('/get-all-dealers', ['controller' => 'Dealers', 'action' => 'getAllDealers']);
 
 
 

@@ -138,7 +138,29 @@ class DealersController extends AppController
 
         return $this->response;
     }
+    public function getAllDealers()
+    {
+        $this->request->allowMethod(['ajax']);
+        $divisionId = $this->request->getQuery('division_id');
+        $districtId = $this->request->getQuery('district_id');
+        $upazilaId = $this->request->getQuery('upazila_id');
 
+        $dealersTable = TableRegistry::getTableLocator()->get('Dealers');
+
+        $query = $dealersTable->find()
+            ->where([
+                'division_id' => $divisionId,
+                'district_id' => $districtId,
+                'upazila_id' => $upazilaId
+            ]);
+        $dealers = $query->all();
+
+        $this->response = $this->response
+            ->withType('application/json')
+            ->withStringBody(json_encode($dealers));
+
+        return $this->response;
+    }
 
     public function addDistrict()
     {

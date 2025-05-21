@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
+use Cake\Http\Client;
 
 
 
@@ -57,22 +58,41 @@ class DealersController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
-            // Get IP Address
-            $data['created_ip'] = $this->request->clientIp();
+            // CAPTCHA validation
+            $recaptchaSecret = '6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx';
+            $recaptchaResponse = $data['g-recaptcha-response'];
 
-            // Load DealerApplications Table
-            $dealerApplicationsTable = $this->fetchTable('DealerApplications');
+            $http = new Client();
+            $verifyResponse = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => $recaptchaSecret,
+                'response' => $recaptchaResponse,
+                'remoteip' => $this->request->clientIp()
+            ]);
 
-            // Create new entity
-            $dealerApplication = $dealerApplicationsTable->newEntity($data);
+            $responseData = $verifyResponse->getJson();
 
-            // Save the application
-            if ($dealerApplicationsTable->save($dealerApplication)) {
-                $this->Flash->success('Your application has been submitted successfully!');
-                return $this->redirect($this->referer());
+            dd($responseData);
+
+            if (!empty($responseData['success']) && $responseData['success'] == true) {
+                // Get IP Address
+                $data['created_ip'] = $this->request->clientIp();
+
+                // Load DealerApplications Table
+                $dealerApplicationsTable = $this->fetchTable('DealerApplications');
+
+                // Create new entity
+                $dealerApplication = $dealerApplicationsTable->newEntity($data);
+
+                // Save the application
+                if ($dealerApplicationsTable->save($dealerApplication)) {
+                    $this->Flash->success('Your application has been submitted successfully!');
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error('There was an error submitting your application. Please try again.');
+                    return $this->redirect($this->referer());
+                }
             } else {
-                $this->Flash->error('There was an error submitting your application. Please try again.');
-                return $this->redirect($this->referer());
+                $this->Flash->error('Captcha validation failed. Please try again.');
             }
         }
 

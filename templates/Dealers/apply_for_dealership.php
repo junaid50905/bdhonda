@@ -219,6 +219,10 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-md-12 col-sm-5">
+                                        <div class="g-recaptcha" data-sitekey="6Le_0EIrAAAAAC2geW9cy9MuCrL8mE8WT893vZ6V"></div>
+                                    </div>
+
                                 </div>
                                 <div class="col-md-12 col-sm-8 col-xs-12">
                                     <button type="submit" class="btn blue pull-right">Submit</button>
@@ -234,6 +238,11 @@
         </div>
     </section>
 </div>
+
+<!-- Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/public/js/chosen.jquery.js" type="text/javascript"></script>
 

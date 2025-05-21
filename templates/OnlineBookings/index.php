@@ -9,7 +9,7 @@
                 <br><br>
 
                 <div class="col-md-8 col-sm-6 col-xs-12">
-                    
+
                     <!-- flash message start -->
                     <?php $flashMessage = $this->Flash->render(); ?>
                     <?php if (!empty($flashMessage)): ?>
@@ -125,6 +125,12 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <div class="col-md-12 col-sm-5">
+                                    <div class="g-recaptcha" data-sitekey="6Le_0EIrAAAAAC2geW9cy9MuCrL8mE8WT893vZ6V"></div>
+                                </div>
+                            </div>
+
                             <div class="col-md-12 col-sm-12">
                                 <button type="submit" class="btn blue pull-right">Submit</button>
                             </div>
@@ -137,6 +143,10 @@
         </div>
     </section>
 </div>
+
+<!-- Google reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

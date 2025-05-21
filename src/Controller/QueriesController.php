@@ -9,6 +9,8 @@ use Cake\Mailer\Email;
 use Cake\Routing\Router;
 use Cake\Log\Log;
 use Cake\Core\Configure;
+use Cake\Http\Client;
+
 use Cake\ORM\TableRegistry;
 
 
@@ -58,26 +60,63 @@ class QueriesController extends AppController
         if ($this->request->is('post')) {
             $data = $this->request->getData();
 
-            $query = $this->Queries->newEntity([
-                'first_name' => h(strip_tags($data['first_name'])),
-                'last_name' => h(strip_tags($data['last_name'])),
-                'message' => h(strip_tags($data['message'])),
-                'email' => $data['email'],
-                'mobile' => $data['mobile'],
-                'product_id' => $data['product_id'],
-                'color' => $data['color'],
-                'dealer_id' => $data['dealer_id'],
-                'created_ip' => $this->request->clientIp(),
+            // CAPTCHA validation
+            $recaptchaSecret = '6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx';
+            $recaptchaResponse = $data['g-recaptcha-response'];
+
+            $http = new Client();
+            $verifyResponse = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => $recaptchaSecret,
+                'response' => $recaptchaResponse,
+                'remoteip' => $this->request->clientIp()
             ]);
 
-            if ($this->Queries->save($query)) {
-                // Query data saved
-                $this->Flash->success('Query submitted successfully!');
+            $responseData = $verifyResponse->getJson();
+
+
+            if (!empty($responseData['success']) && $responseData['success'] == true) {
+                $query = $this->Queries->newEntity([
+                    'first_name' => h(strip_tags($data['first_name'])),
+                    'last_name' => h(strip_tags($data['last_name'])),
+                    'message' => h(strip_tags($data['message'])),
+                    'email' => $data['email'],
+                    'mobile' => $data['mobile'],
+                    'product_id' => $data['product_id'],
+                    'color' => $data['color'],
+                    'dealer_id' => $data['dealer_id'],
+                    'created_ip' => $this->request->clientIp(),
+                ]);
+
+                if ($this->Queries->save($query)) {
+                    // Query data saved
+                    $this->Flash->success('Query submitted successfully!');
+                    return $this->redirect($this->referer());
+                } else {
+                    $this->Flash->error('Query not submitted!');
+                    return $this->redirect($this->referer());
+                }
+            } else {
+                $this->Flash->error('Captcha validation failed. Please try again.');
                 return $this->redirect($this->referer());
 
-            } else {
-                $this->Flash->error('Query not submitted!');
-                return $this->redirect($this->referer());
+                $this->set('page_title', 'CB Hornet 160R Enquiry form');
+                $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
+                $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike, CB HORNET 160R');
+
+                $slug = h(strip_tags($product_slug));
+                $productTable = $this->getTableLocator()->get('Products');
+                $productDetails = $productTable->find()
+                    ->where(['Products.slug' => $slug])
+                    ->contain(['Colors'])
+                    ->first();
+
+                $divisionTable = $this->getTableLocator()->get('Divisions');
+                $divisions = $divisionTable->find('list')->toArray();
+
+
+                $this->set('slug', $slug);
+                $this->set('productDetails', $productDetails);
+                $this->set('divisions', $divisions);
             }
 
         } else {

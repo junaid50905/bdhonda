@@ -71,8 +71,6 @@ class DealersController extends AppController
 
             $responseData = $verifyResponse->getJson();
 
-            dd($responseData);
-
             if (!empty($responseData['success']) && $responseData['success'] == true) {
                 // Get IP Address
                 $data['created_ip'] = $this->request->clientIp();

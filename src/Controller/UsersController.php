@@ -6,6 +6,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Datasource\Exception\RecordNotFoundException;
 use Cake\Http\Client; // For HTTP requests (Recaptcha)
 use Cake\Mailer\Mailer;
+use Cake\Core\Configure;
 
 class UsersController extends AppController
 {
@@ -34,31 +35,107 @@ class UsersController extends AppController
     //     return !empty($result['success']) && $result['success'];
     // }
 
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('Flash');
+    }
+
 
     public function beforeFilter(\Cake\Event\EventInterface $event)
     {
         parent::beforeFilter($event);
         $this->Authentication->addUnauthenticatedActions(['login']);
     }
+
     public function login()
     {
         $this->viewBuilder()->setLayout('login_layout');
-
-
         $this->request->allowMethod(['get', 'post']);
-        $result = $this->Authentication->getResult();
-        if ($result && $result->isValid()) {
-            $redirect = $this->request->getQuery('redirect', [
-                'controller' => 'Dashboards',
-                'action' => 'index',
+
+        if($this->request->is('post')){
+            $result = $this->Authentication->getResult();
+
+            // CAPTCHA validation
+            $recaptchaSecret = '6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx';
+            $recaptchaResponse = $this->request->getData('g-recaptcha-response');
+
+            $http = new Client();
+            $verifyResponse = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => $recaptchaSecret,
+                'response' => $recaptchaResponse,
+                'remoteip' => $this->request->clientIp()
             ]);
 
-            return $this->redirect($redirect);
+            $responseData = $verifyResponse->getJson();
+
+            if (!empty($responseData['success']) && $responseData['success'] == true) {
+                if ($result && $result->isValid()) {
+                    $redirect = $this->request->getQuery('redirect', [
+                        'controller' => 'Dashboards',
+                        'action' => 'index',
+                    ]);
+
+                    return $this->redirect($redirect);
+                }
+
+                if ($this->request->is('post') && !$result->isValid()) {
+                    $this->Flash->error(__('Invalid username or password'));
+                }
+            } else {
+                $this->Flash->error('Captcha validation failed. Please try again.');
+            }
         }
-        if ($this->request->is('post') && !$result->isValid()) {
-            $this->Flash->error(__('Invalid username or password'));
-        }
+
+
+
+
+
     }
+
+    // public function login()
+    // {
+    //     $this->viewBuilder()->setLayout('login_layout');
+    //     $this->request->allowMethod(['get', 'post']);
+
+    //     $result = $this->Authentication->getResult();
+
+    //     if ($this->request->is('post')) {
+    //         // Check if reCAPTCHA response is present
+    //         $recaptchaResponse = $this->request->getData('g-recaptcha-response');
+
+    //         if (empty($recaptchaResponse)) {
+    //             $this->Flash->error(__('Please complete the reCAPTCHA.'));
+    //             return;
+    //         }
+
+    //         // Verify reCAPTCHA with Google
+    //         $http = new Client();
+    //         $response = $http->post('https://www.google.com/recaptcha/api/siteverify', [
+    //             'secret' => Configure::read('6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx'),
+    //             'response' => $recaptchaResponse,
+    //             'remoteip' => $this->request->clientIp()
+    //         ]);
+
+    //         $body = $response->getJson();
+
+    //         if (empty($body['success']) || !$body['success']) {
+    //             $this->Flash->error(__('reCAPTCHA verification failed. Please try again.'));
+    //             return;
+    //         }
+
+    //         // If reCAPTCHA is valid, check authentication
+    //         if ($result && $result->isValid()) {
+    //             $redirect = $this->request->getQuery('redirect', [
+    //                 'controller' => 'Dashboards',
+    //                 'action' => 'index',
+    //             ]);
+    //             return $this->redirect($redirect);
+    //         }
+
+    //         $this->Flash->error(__('Invalid username or password'));
+    //     }
+    // }
 
     public function logout()
     {

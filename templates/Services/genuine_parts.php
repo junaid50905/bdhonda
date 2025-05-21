@@ -37,47 +37,47 @@
 
                         <!-- BEGIN FORM-->
                         <?= $this->Form->create(null, ['url' => ['controller' => 'services', 'action' => 'genuineParts']]) ?>
-                        <div class="form-left-box rech-us-box">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label>Select Your Bike Model</label>
-                                        <?= $this->Form->control('product_id', [
-                                            'type' => 'select',
-                                            'options' => $products,
-                                            'empty' => '--- Select Bike Model ---',
-                                            'label' => false,
-                                            'class' => 'form-control'
-                                        ]) ?>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Part Name</label>
-                                        <?= $this->Form->control('name', [
-                                            'label' => false,
-                                            'placeholder' => 'Part Name',
-                                            'class' => 'form-control'
-                                        ]) ?>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Part Number</label>
-                                        <?= $this->Form->control('part_number', [
-                                            'label' => false,
-                                            'placeholder' => 'Part Number',
-                                            'class' => 'form-control'
-                                        ]) ?>
-                                    </div>
-                                    <div class="col-md-1 pt-3">
-                                        <button type="submit" class="btn blue">Submit</button>
+                            <div class="form-left-box rech-us-box">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label>Select Your Bike Model</label>
+                                            <?= $this->Form->control('product_id', [
+                                                'type' => 'select',
+                                                'options' => $products,
+                                                'empty' => '--- Select Bike Model ---',
+                                                'label' => false,
+                                                'class' => 'form-control'
+                                            ]) ?>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Part Name</label>
+                                            <?= $this->Form->control('name', [
+                                                'label' => false,
+                                                'placeholder' => 'Part Name',
+                                                'class' => 'form-control'
+                                            ]) ?>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label>Part Number</label>
+                                            <?= $this->Form->control('part_number', [
+                                                'label' => false,
+                                                'placeholder' => 'Part Number',
+                                                'class' => 'form-control'
+                                            ]) ?>
+                                        </div>
+                                        <div class="col-md-1 pt-3">
+                                            <button type="submit" class="btn blue">Submit</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <?= $this->Form->end() ?>
                         <!-- END FORM-->
                     </div>
 
                     <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
-                        <?php if (!empty($partPrices)): ?>
+                        <?php if (!empty($results)): ?>
                             <table class="table table-bordered table-striped part-table">
                                 <thead>
                                     <tr>
@@ -87,11 +87,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($partPrices as $partPrice): ?>
+                                    <?php foreach ($results as $partPrice): ?>
                                         <tr>
-                                            <td style="text-align: center"><?= h($partPrice['PartPrice']['part_number']) ?></td>
-                                            <td style="text-align: center"><?= h($partPrice['PartPrice']['name']) ?></td>
-                                            <td style="text-align: right"><?= h($partPrice['PartPrice']['price']) ?></td>
+                                            <td style="text-align: center"><?= h($partPrice['part_number']) ?></td>
+                                            <td style="text-align: center"><?= h($partPrice['name']) ?></td>
+                                            <td style="text-align: right"><?= h($partPrice['price']) ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

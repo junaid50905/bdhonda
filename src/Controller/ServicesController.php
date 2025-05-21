@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+
+
 /**
  * Services Controller
  *
@@ -47,48 +50,40 @@ class ServicesController extends AppController
         $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
         $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
 
-        // Fetch the list of products (key-value pair)
-        $products = $this->fetchTable('Products')->find('list')->toArray();
-        $this->set('products', $products);
+        $productsTable = TableRegistry::getTableLocator()->get('Products');
+        $partPricesTable = TableRegistry::getTableLocator()->get('PartPrices');
 
-        // Handle form submission (POST request)
+        $products = $productsTable->find('list')->toArray();
+        $this->set(compact('products'));
+
+        $results = [];
+
         if ($this->request->is('post')) {
-            // Get form data
-            $data = $this->request->getData('Service');
+            $data = $this->request->getData();
 
-            // Initialize conditions array
-            $conditions = [];
+            $query = $partPricesTable->find()
+                ->select(['name', 'price', 'part_number'])
+                ->where(['product_id' => $data['product_id']]);
 
-            // Build conditions based on form input
-            if (!empty($data['product_id'])) {
-                $conditions['PartPrices.product_id'] = (int)$data['product_id'];
-            }
-            if (!empty($data['part_number'])) {
-                $conditions['PartPrices.part_number'] = $data['part_number'];
-            }
             if (!empty($data['name'])) {
-                $conditions['PartPrices.name LIKE'] = '%' . $data['name'] . '%';
+                $query->where(function ($exp, $q) use ($data) {
+                    return $exp->like('name', '%' . trim($data['name']) . '%');
+                });
             }
 
-            // If any conditions were added, fetch the filtered part prices
-            if (!empty($conditions)) {
-                $partPrices = $this->fetchTable('PartPrices')->find('all', [
-                    'conditions' => $conditions,
-                    'fields' => [
-                        'PartPrices.id',
-                        'PartPrices.name',
-                        'PartPrices.part_number',
-                        'PartPrices.price',
-                        'Products.id',
-                        'Products.name'
-                    ],
-                    'contain' => ['Products'] // Ensures Product data is fetched with PartPrices
-                ])->all();
-
-                // Set part prices to view
-                $this->set('partPrices', $partPrices);
+            if (!empty($data['part_number'])) {
+                $query->where(function ($exp, $q) use ($data) {
+                    return $exp->like('part_number', '%' . trim($data['part_number']) . '%');
+                });
             }
+
+            $results = $query->all()->toArray();
+
         }
+
+
+        $this->set(compact('results'));
+
     }
     /**
      * engineOil

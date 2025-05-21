@@ -61,7 +61,7 @@ class QueriesController extends AppController
             $data = $this->request->getData();
 
             // CAPTCHA validation
-            $recaptchaSecret = '6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx';
+            $recaptchaSecret = Configure::read('recaptcha.secret_key');
             $recaptchaResponse = $data['g-recaptcha-response'];
 
             $http = new Client();

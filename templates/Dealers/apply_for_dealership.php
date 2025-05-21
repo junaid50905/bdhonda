@@ -221,7 +221,8 @@
                                     </div>
 
                                     <div class="col-md-12 col-sm-5">
-                                        <div class="g-recaptcha" data-sitekey="6Le_0EIrAAAAAC2geW9cy9MuCrL8mE8WT893vZ6V"></div>
+                                        <?php  use Cake\Core\Configure;?>
+                                        <div class="g-recaptcha" data-sitekey="<?php echo Configure::read('recaptcha.site_key'); ?>"></div>
                                     </div>
 
                                 </div>

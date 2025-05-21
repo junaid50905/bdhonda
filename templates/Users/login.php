@@ -1,7 +1,7 @@
 <div class="users form">
     <?= $this->Flash->render() ?>
     <h3 class="form-title">Login to your account</h3>
-    
+
     <?= $this->Form->create() ?>
     <fieldset>
         <div class="form-group">
@@ -36,7 +36,10 @@
         </div>
 
         <div class="form-group">
-            <div class="g-recaptcha" data-sitekey="6Le_0EIrAAAAAC2geW9cy9MuCrL8mE8WT893vZ6V"></div>
+            <div>
+                <?php use Cake\Core\Configure; ?>
+                <div class="g-recaptcha" data-sitekey="<?php echo Configure::read('recaptcha.site_key'); ?>"></div>
+            </div>
         </div>
 
     </fieldset>

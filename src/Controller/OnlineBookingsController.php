@@ -8,6 +8,8 @@ use Cake\Mailer\Mailer;
 use Cake\Log\Log;
 use Cake\Http\Exception\BadRequestException;
 use Cake\Http\Client;
+use Cake\Core\Configure;
+
 
 /**
  * OnlineBookings Controller
@@ -83,7 +85,7 @@ class OnlineBookingsController extends AppController
             $data = $this->request->getData();
 
             // CAPTCHA validation
-            $recaptchaSecret = '6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx';
+            $recaptchaSecret = Configure::read('recaptcha.secret_key');
             $recaptchaResponse = $data['g-recaptcha-response'];
 
             $http = new Client();

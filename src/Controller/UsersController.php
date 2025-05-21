@@ -57,7 +57,7 @@ class UsersController extends AppController
             $result = $this->Authentication->getResult();
 
             // CAPTCHA validation
-            $recaptchaSecret = '6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx';
+            $recaptchaSecret = Configure::read('recaptcha.secret_key');
             $recaptchaResponse = $this->request->getData('g-recaptcha-response');
 
             $http = new Client();

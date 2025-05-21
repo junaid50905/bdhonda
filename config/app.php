@@ -420,4 +420,10 @@ return [
         'safeTld' => env('DEBUG_KIT_SAFE_TLD', null),
         'ignoreAuthorization' => env('DEBUG_KIT_IGNORE_AUTHORIZATION', false)
     ],
+
+    'recaptcha' => [
+        'site_key' => '6Le_0EIrAAAAAC2geW9cy9MuCrL8mE8WT893vZ6V',
+        'secret_key' => '6Le_0EIrAAAAANZzOUob3YJG3vr_wCfVN-LmJTKx'
+    ],
+
 ];

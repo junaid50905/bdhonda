@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Http\Exception\NotFoundException;
+
+
 /**
  * About Controller
  *
@@ -59,10 +62,28 @@ class AboutController extends AppController
         $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
         $this->set('meta_keywords', 'YES Award, Honda Foundation, Honda, Vision & Mission, Y-E-S Award in Bangladesh, HONDA Y-E-S Award in Bangladesh, Stylish Bike');
     }
-    public function download()
-    {
 
+    public function download($fileName)
+    {
+        // Sanitize file name to prevent directory traversal
+        $safeFileName = basename($fileName);
+        $filePath = WWW_ROOT . 'assets' . DS . 'public' . DS . 'images' . DS . 'about-us' . DS . $safeFileName;
+
+        if (!file_exists($filePath)) {
+            throw new NotFoundException(__('File not found'));
+        }
+
+        $this->response = $this->response->withFile(
+            $filePath,
+            [
+                'download' => true,
+                'name' => $safeFileName
+            ]
+        );
+        return $this->response;
     }
+
+
 
     /**
      * Index method

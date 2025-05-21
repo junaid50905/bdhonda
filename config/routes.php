@@ -121,17 +121,17 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/yes-award', ['controller' => 'About', 'action' => 'yesAward']);
         // Done end
 
-        $builder->connect('/download/:fileName', ['controller' => 'About', 'action' => 'download']);// not working // with this route there is something more
+        $builder->connect('/download/{fileName}', ['controller' => 'About', 'action' => 'download'])->setPass(['fileName']);
 
-        $builder->connect('/career', ['controller' => 'Jobs', 'action' => 'index']);// controller is not ready to work
-        $builder->connect('/career/job-details/:id', ['controller' => 'Jobs', 'action' => 'jobDetails']);// controller is not ready to work
-        $builder->connect('/career/apply-online/:id', ['controller' => 'Jobs', 'action' => 'applyOnline']);// controller is not ready to work
+        $builder->connect('/career', ['controller' => 'Jobs', 'action' => 'index']);
+        $builder->connect('/career/job-details/:id', ['controller' => 'Jobs', 'action' => 'jobDetails']);
+        $builder->connect('/career/apply-online/:id', ['controller' => 'Jobs', 'action' => 'applyOnline']);
 
         // Done start
         $builder->connect('/dealer-network/dealer-locator', ['controller' => 'Dealers', 'action' => 'dealerLocator']);
-        $builder->connect('/dealer-network/apply-for-dealership', ['controller' => 'Dealers', 'action' => 'applyForDealership']);// controller is not ready to work
-        $builder->connect('/dealer-network/parts-service-locator', ['controller' => 'Dealers', 'action' => 'partsServiceLocator']);// controller is not ready to work
-        $builder->connect('/dealer-network/thank-you', ['controller' => 'Dealers', 'action' => 'thanks']);// controller is not ready to work
+        $builder->connect('/dealer-network/apply-for-dealership', ['controller' => 'Dealers', 'action' => 'applyForDealership']);
+        $builder->connect('/dealer-network/parts-service-locator', ['controller' => 'Dealers', 'action' => 'partsServiceLocator']);
+        $builder->connect('/dealer-network/thank-you', ['controller' => 'Dealers', 'action' => 'thanks']);
         // Done end
 
         // Done start

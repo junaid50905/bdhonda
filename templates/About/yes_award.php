@@ -10,19 +10,16 @@
             <a class="btn btn btn-primary btn-lg btn-block"
                 href="<?= $this->Url->build('/', ['fullBase' => true]); ?>download/Applicants_Name_APPLICATION_FORM.xlsx"
                 target="_blank" role="button">Download Application Form </a>
-            <!--<a class="btn btn btn-primary btn-lg btn-block" href="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/public/images/about-us/(Applicant's Name)_APPLICATION FORM.xlsx" target="_blank"  role="button">Download Application Form </a>-->
         </div>
         <div class="col-md-4" style="margin: 50px 0 20px 0;">
             <a class="btn btn btn-primary btn-lg btn-block"
                 href="<?= $this->Url->build('/', ['fullBase' => true]); ?>download/Applicants_Name_RECOMMENDATION_LETTER.xlsx"
                 target="_blank" role="button">Download Recommendation Letter </a>
-            <!--<a class="btn btn btn-primary btn-lg btn-block" href="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/public/images/about-us/(Applicant's Name)_RECOMMENDATION LETTER.xlsx" target="_blank" role="button">Download Recommendation Letter </a>-->
         </div>
         <div class="col-md-4" style="margin: 50px 0 20px 0;">
             <a class="btn btn btn-primary btn-lg btn-block"
                 href="<?= $this->Url->build('/', ['fullBase' => true]); ?>download/HONDA_Y-E-S_AWARD_Application_Procedure.pdf"
                 target="_blank" role="button">Application Procedure </a>
-            <!--<a class="btn btn btn-primary btn-lg btn-block" href="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/public/images/about-us/HONDA Y-E-S AWARD_Application Procedure.pdf" target="_blank" role="button">Application Procedure </a>-->
         </div>
     </div>
 </section>
@@ -31,9 +28,6 @@
 <section class="micro-sec network-sec">
 
     <div class="row">
-
-
-
 
         <div class="col-md-12 col-xs-12 col-sm-12 foun-pag2 ">
             <h2 class="pb-1"><b>Honda Foundation</b></h2>
@@ -128,7 +122,7 @@
                 <h4 style="color: brown; font-weight: bold;">Objective </h4>
                 <div id="example1">
 
-                    <blockquote style="line"> Support the development and promotion of young leaders to spearhead the
+                    <blockquote> Support the development and promotion of young leaders to spearhead the
                         growth of these countries in the future.</blockquote>
                     <blockquote>The program is aimed at the balanced and sound advancement of industry and of science
                         and technology in all of these Southeast Asian countries.</blockquote>

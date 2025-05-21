@@ -98,7 +98,6 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/product/{slug}/colors', ['controller' => 'Products', 'action' => 'colors'])->setPass(['slug']);
         $builder->connect('/product/{slug}/price', ['controller' => 'Products', 'action' => 'price'])->setPass(['slug']);
         // Done end
-        $builder->connect('/online_bookings/index/{slug}', ['controller' => 'OnlineBookings', 'action' => 'index'])->setPass(['slug']);
 
         // Done start
         $builder->connect('/services/honda-service', ['controller' => 'Services', 'action' => 'hondaService']);
@@ -212,6 +211,8 @@ return function (RouteBuilder $routes): void {
 
         // online booking
         $builder->connect('/online_bookings/all_list', ['controller' => 'OnlineBookings', 'action' => 'allList']);
+        $builder->connect('/online_bookings/index/{product_slug}', ['controller' => 'OnlineBookings', 'action' => 'index'])->setPass(['product_slug']);
+
 
         // dealers all application
         $builder->connect('/dealers/all_application_list', ['controller' => 'Dealers', 'action' => 'allApplicationList']);

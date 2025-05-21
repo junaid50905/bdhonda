@@ -116,8 +116,6 @@
             </div>
             <hr>
 
-
-
             <div class="col-md-6 col-xs-12 col-sm-12" style="margin: 0 auto;">
                 <h4 style="color: brown; font-weight: bold;">Objective </h4>
                 <div id="example1">

@@ -71,11 +71,53 @@ class OnlineBookingsController extends AppController
     //     return false;
     // }
 
-    public function index($slug)
+    public function index($product_slug)
     {
-        $this->set('page_title', 'Bangladesh Honda Private Limited');
-        $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
-        $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
+        if ($this->request->is('post')) {
+            $data = $this->request->getData();
+
+            $onlineBooking = $this->OnlineBookings->newEntity([
+                'first_name' => h(strip_tags($data['first_name'])),
+                'last_name' => h(strip_tags($data['last_name'])),
+                'message' => h(strip_tags($data['message'])),
+                'email' => $data['email'],
+                'mobile' => $data['mobile'],
+                'product_id' => $data['product_id'],
+                'color' => $data['color'],
+                'dealer_id' => $data['dealer_id'],
+                'created_ip' => $this->request->clientIp(),
+                'date_time' => $data['date_time'],
+            ]);
+
+            if ($this->OnlineBookings->save($onlineBooking)) {
+                // Query data saved
+                // $this->Flash->success('Query submitted successfully!');
+                return $this->redirect($this->referer());
+            } else {
+                $this->Flash->error('Not submitted!');
+            }
+        } else {
+            $this->set('page_title', 'Bangladesh Honda Private Limited');
+            $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
+            $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
+
+
+            $slug = h(strip_tags($product_slug));
+            $productTable = $this->getTableLocator()->get('Products');
+            $productDetails = $productTable->find()
+                ->where(['Products.slug' => $slug])
+                ->contain(['Colors'])
+                ->first();
+
+            $divisionTable = $this->getTableLocator()->get('Divisions');
+            $divisions = $divisionTable->find('list')->toArray();
+
+
+            $this->set('slug', $slug);
+            $this->set('productDetails', $productDetails);
+            $this->set('divisions', $divisions);
+        }
+
     }
 
 

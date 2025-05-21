@@ -68,9 +68,11 @@ class DealersController extends AppController
 
             // Save the application
             if ($dealerApplicationsTable->save($dealerApplication)) {
-                return $this->redirect(['action' => 'applyForDealership']);
+                $this->Flash->success('Your application has been submitted successfully!');
+                return $this->redirect($this->referer());
             } else {
                 $this->Flash->error('There was an error submitting your application. Please try again.');
+                return $this->redirect($this->referer());
             }
         }
 

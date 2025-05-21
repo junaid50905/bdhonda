@@ -18,6 +18,12 @@ use Cake\Http\Client;
  */
 class OnlineBookingsController extends AppController
 {
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent('Flash');
+    }
+
     /**
      * Components
      *
@@ -91,7 +97,7 @@ class OnlineBookingsController extends AppController
 
             if ($this->OnlineBookings->save($onlineBooking)) {
                 // Query data saved
-                // $this->Flash->success('Query submitted successfully!');
+                $this->Flash->success('Your application has been submitted successfully!');
                 return $this->redirect($this->referer());
             } else {
                 $this->Flash->error('Not submitted!');

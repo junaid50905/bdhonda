@@ -3,6 +3,17 @@
     <link href="<?= $this->Url->build('/', ['fullBase' => true]); ?>assets/public/css/form.css" rel="stylesheet">
     <section class="micro-sec network-sec">
         <div class="network-header">
+            <!-- flash message start -->
+            <?php $flashMessage = $this->Flash->render(); ?>
+            <?php if (!empty($flashMessage)): ?>
+                <div class="col-lg-12">
+                    <div class="alert alert-success flash-msg">
+                        <button type="button" class="close" data-dismiss="alert">×</button>
+                        <?= $flashMessage ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+            <!-- flash message end -->
             <div class="row">
                 <div class="col-md-4 col-sm-12 col-xs-12 text-center">
                     <h5>Dealer Network</h5>
@@ -157,6 +168,7 @@
                 <div class="row " style="justify-content: center;">
 
                     <div class="col-md-8 col-sm-12 col-xs-12">
+
                         <div class="row">
                             <!-- BEGIN FORM-->
                             <?= $this->Form->create(null, [
@@ -260,5 +272,23 @@
         });
 
 
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Manual close
+        $('.flash-msg .close').on('click', function() {
+            $(this).closest('.flash-msg').fadeOut(300, function() {
+                $(this).remove();
+            });
+        });
+
+        // Auto close after 5 seconds
+        setTimeout(function() {
+            $('.flash-msg').fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 5000);
     });
 </script>

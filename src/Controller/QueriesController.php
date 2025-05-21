@@ -72,11 +72,12 @@ class QueriesController extends AppController
 
             if ($this->Queries->save($query)) {
                 // Query data saved
-                // $this->Flash->success('Query submitted successfully!');
+                $this->Flash->success('Query submitted successfully!');
                 return $this->redirect($this->referer());
 
             } else {
                 $this->Flash->error('Query not submitted!');
+                return $this->redirect($this->referer());
             }
 
         } else {
@@ -232,7 +233,7 @@ class QueriesController extends AppController
         $this->set('page_title', 'Queries');
 
         $queriesTable = TableRegistry::getTableLocator()->get('Queries');
-        
+
         $queries = $queriesTable->find()
             ->contain(['Dealers', 'Products'])
             ->orderBy(['Queries.created' => 'DESC']) // or ['Queries.id' => 'DESC']

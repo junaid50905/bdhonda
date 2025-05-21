@@ -8,6 +8,19 @@
             <div class="row p-3" style="justify-content: center;">
                 <br><br>
                 <div class="col-md-8 col-sm-6 col-xs-12">
+                    
+                    <!-- flash message start -->
+                    <?php $flashMessage = $this->Flash->render(); ?>
+                    <?php if (!empty($flashMessage)): ?>
+                        <div class="col-lg-12">
+                            <div class="alert alert-success flash-msg">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                <?= $flashMessage ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                    <!-- flash message end -->
+
                     <?php echo $this->Form->create(null, ['controller' => 'Queries', 'action' => 'addQuery']); ?>
                     <div class="form-left-box rech-us-box">
                         <div class="text-center">
@@ -207,6 +220,23 @@
             }
         });
 
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        // Manual close
+        $('.flash-msg .close').on('click', function() {
+            $(this).closest('.flash-msg').fadeOut(300, function() {
+                $(this).remove();
+            });
+        });
+
+        // Auto close after 5 seconds
+        setTimeout(function() {
+            $('.flash-msg').fadeOut(300, function() {
+                $(this).remove();
+            });
+        }, 5000);
     });
 </script>
 

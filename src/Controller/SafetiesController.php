@@ -24,129 +24,15 @@ class SafetiesController extends AppController
     {
         parent::initialize();
         $this->Safety = TableRegistry::getTableLocator()->get('Safeties');
+        $this->loadComponent('Authentication.Authentication');
     }
 
-    /**
-     * This controller uses the Safety model
-     *
-     * @var string[]
-     */
-    // public function initialize(): void
-    // {
-    //     parent::initialize();
-    //     $this->loadComponent('Flash');
-    //     $this->loadComponent('Upload');
-    //     $this->loadComponent('Img');
-
-    //     // Allow public access to these actions
-    //     $this->Auth->allow(['safetyApproach', 'safetyInitiatives', 'safetyEducation']);
-    // }
-
-    // public function beforeFilter(EventInterface $event)
-    // {
-    //     parent::beforeFilter($event);
-    // }
-
-    /**
-     * Admin Section
-     */
-    // public function allList()
-    // {
-    //     $this->set('page_title', 'Safeties');
-
-    //     // Fetch data using pagination
-    //     $query = $this->Safety->find('all');
-    //     $paginator = new Paginator(); // Initialize Paginator
-    //     $safeties = $paginator->paginate($query); // Apply pagination to the query
-
-    //     // Set paginated results to the view
-    //     $this->set(compact('safeties'));
-
-    //     // Set other view variables
-    //     $this->set('activity_picture', $this->Safety->getAllActivityPicture());
-    //     $this->set('pdsa', $this->Safety->getAllPdsa());
-    //     $this->set('education', $this->Safety->getAllEducation());
-    // }
-
-    // public function add($accessoryId = null, $model = null)
-    // {
-    //     $safety = null;
-
-    //     if (!$model && $accessoryId) {
-    //         // Edit mode: $accessoryId exists, model is false
-    //         $id = h(strip_tags($accessoryId));
-    //         if (is_numeric($id)) {
-    //             $safety = $this->Safety->findById($id);
-    //             if ($safety) {
-    //                 $this->set(compact('safety'));
-    //             }
-    //         }
-    //     }
-
-    //     // Handle form submission
-    //     if ($this->request->is('post') && !empty($this->request->getData('Safety'))) {
-    //         $data = $this->request->getData('Safety');
-
-    //         // Handle image upload
-    //         if (!empty($data['temp_image'])) {
-    //             $newName = $this->generateRandomString();
-    //             $uploadResult = $this->uploadImage($newName, $data['temp_image'], ['uploadTo' => 'safeties/' . $data['safety_category']]);
-    //             if ($uploadResult) {
-    //                 $data['image'] = $uploadResult;
-    //             }
-    //         }
-
-    //         if (!empty($data['id'])) {
-    //             $this->Safety->id = $data['id'];
-    //         }
-
-    //         if ($this->Safety->save($data)) {
-    //             $this->Flash->success('Safety saved successfully!');
-    //             return $this->redirect(['action' => 'allList']);
-    //         } else {
-    //             $this->Flash->error('Safety not saved!');
-    //         }
-    //     }
-
-    //     $this->set(compact('model', 'page_title'));
-    //     $this->set('safety_category', $model);
-    //     $this->set('page_title', 'Safeties');
-    // }
-
-    // public function delete($id = null)
-    // {
-    //     if (!$id) {
-    //         throw new NotFoundException('Invalid Safety');
-    //     }
-
-    //     $this->Safety->id = $id;
-    //     if ($this->Safety->delete()) {
-    //         $this->Flash->success('Safety deleted successfully!');
-    //     } else {
-    //         $this->Flash->error('Safety not deleted!');
-    //     }
-
-    //     return $this->redirect(['action' => 'allList']);
-    // }
-
-    // private function generateRandomString($length = 15): string
-    // {
-    //     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    //     return substr(str_shuffle(str_repeat($characters, ceil($length / strlen($characters)))), 1, $length);
-    // }
-
-    // private function uploadImage($newName, $document, $options = []): ?string
-    // {
-    //     $ext = pathinfo($document->getClientFilename(), PATHINFO_EXTENSION);
-    //     $fileName = $newName . '.' . $ext;
-    //     $targetDir = WWW_ROOT . 'assets/public/images/' . $options['uploadTo'];
-    //     $document->moveTo($targetDir . '/' . $fileName);
-
-    //     if (file_exists($targetDir . '/' . $fileName)) {
-    //         return $fileName;
-    //     }
-    //     return null;
-    // }
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        // Allow public access to this action
+        $this->Authentication->addUnauthenticatedActions(['safetyApproach', 'safetyInitiatives', 'safetyEducation']);
+    }
 
     public function safetyApproach()
     {

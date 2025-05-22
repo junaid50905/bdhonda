@@ -78,9 +78,9 @@
                     <div id="carouselLatest" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <a href="<?= $this->Html->script("/"); ?>product/shine-100/index"><img
-                                        src="<?= $this->Html->script("/"); ?>assets/public/images/gallery/new1shine.jpg"
-                                        alt="Shine 100" style="width:100%; height:auto"></a>
+                                    <a href="<?= $this->Html->script("/"); ?>product/shine-100/index">
+                                        <img src="<?= $this->Url->image('/assets/public/images/gallery/new1shine.jpg', ['fullBase' => true]) ?>" alt="Shine 100" style="width:100%; height:auto">
+                                    </a>
                             </div>
                             <div class="carousel-item">
                                 <a href="<?= $this->Html->script("/"); ?>product/dream-110/index"><img

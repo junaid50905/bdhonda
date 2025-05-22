@@ -13,6 +13,20 @@ use Cake\Http\Exception\NotFoundException;
 class AboutController extends AppController
 {
 
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Authentication.Authentication');
+    }
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        // Allow public access to this action
+        $this->Authentication->addUnauthenticatedActions(['aboutBhl', 'aboutHonda', 'philosophy', 'innovation', 'motorsports', 'hondaHistory', 'heritage', 'yesAward', 'download']);
+    }
 
     public function aboutBhl()
     {

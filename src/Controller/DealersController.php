@@ -26,7 +26,16 @@ class DealersController extends AppController
         $this->Upazila = TableRegistry::getTableLocator()->get('upazilas');
         $this->Dealers = TableRegistry::getTableLocator()->get('dealers');
         $this->loadComponent('Flash');
+        $this->loadComponent('Authentication.Authentication');
     }
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        // Allow public access to this action
+        $this->Authentication->addUnauthenticatedActions(['dealerLocator', 'thankYou', 'applyForDealership']);
+    }    
 
 
     public function dealerLocator()

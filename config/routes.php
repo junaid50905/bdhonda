@@ -69,12 +69,12 @@ return function (RouteBuilder $routes): void {
         $builder->connect('/api/media-center/press-release', ['controller' => 'Media', 'action' => 'pressrelease']); // done: need some changes in the code
 
         // start
-        $builder->connect('/dashboard', ['controller' => 'Dashboards', 'action' => 'index']);
+        // $builder->connect('/dashboard', ['controller' => 'Dashboards', 'action' => 'index']);
         // end
 
         // Done start
         $builder->connect('/reach-us', ['controller' => 'Feedback', 'action' => 'index']);
-        $builder->connect('/reach-us/thank-you', ['controller' => 'Feedback', 'action' => 'thankYou']); // Not done yet
+        $builder->connect('/reach-us/thank-you', ['controller' => 'Feedback', 'action' => 'thankYou']);
 
         $builder->connect('/media-center/press-release', ['controller' => 'Media', 'action' => 'pressRelease']);
         $builder->connect('/media-center/pr-details/{id}', ['controller' => 'Media', 'action' => 'prDetails'])->setPass(['id']);
@@ -143,7 +143,9 @@ return function (RouteBuilder $routes): void {
 
         /////////////////////////////// Admin routes ////////////////////////////////////////
         $builder->connect('/users/login', ['controller' => 'Users', 'action' => 'login']);
+
         $builder->connect('/dashboard', ['controller' => 'Dashboards', 'action' => 'index']);
+        
         // sliders
         $builder->connect('/sliders/all_list', ['controller' => 'Sliders', 'action' => 'allList']);
         $builder->connect('/sliders/add', ['controller' => 'Sliders', 'action' => 'add']);

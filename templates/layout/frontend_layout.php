@@ -274,19 +274,19 @@
                                             <div class="accordion-body panel-body">
                                                 <div class="block">
                                                     <ul>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'shine-100']) ?>" title="Shine 100">Shine 100</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'dream-110']) ?>" title="Dream Neo">Dream 110</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'livo']) ?>" title="Livo">Livo</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'sp-125']) ?>" title="Wave Alpha">SP 125</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'sp-160']) ?>" title="SP 160">SP 160</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'xblade']) ?>" title="CB Trigger">XBlade</a></li>
-                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'cb-hornet-160r']) ?>" title="CB Hornet 160R">CB Hornet 160R</a></li>-->
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'hornet-2-0']) ?>" title="Hornet 2.0">Hornet 2.0</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'cbr-150r']) ?>" title="CBR 150R">CBR 150R</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'dio']) ?>" title="Dio">Dio</a></li>
-                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'cd-80']) ?>" title="CD 80">CD 80</a></li>-->
-                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'cb-trigger']) ?>" title="CB Trigger">CB Trigger</a></li>-->
-                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'view', 'cb-shine-sp']) ?>" title="CB Shine SP">CB Shine SP</a></li>-->
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'shine-100']) ?>" title="Shine 100">Shine 100</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'dream-110']) ?>" title="Dream Neo">Dream 110</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'livo']) ?>" title="Livo">Livo</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'sp-125']) ?>" title="Wave Alpha">SP 125</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'sp-160']) ?>" title="SP 160">SP 160</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'xblade']) ?>" title="CB Trigger">XBlade</a></li>
+                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'cb-hornet-160r']) ?>" title="CB Hornet 160R">CB Hornet 160R</a></li>-->
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'hornet-2-0']) ?>" title="Hornet 2.0">Hornet 2.0</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'cbr-150r']) ?>" title="CBR 150R">CBR 150R</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'dio']) ?>" title="Dio">Dio</a></li>
+                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'cd-80']) ?>" title="CD 80">CD 80</a></li>-->
+                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'cb-trigger']) ?>" title="CB Trigger">CB Trigger</a></li>-->
+                                                        <!--<li><a href="<?= $this->Url->build(['controller' => 'Products', 'action' => 'index', 'cb-shine-sp']) ?>" title="CB Shine SP">CB Shine SP</a></li>-->
                                                     </ul>
 
                                                 </div>
@@ -308,12 +308,12 @@
                                                 <div class="block">
 
                                                     <ul>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'view', 'honda-service']) ?>" title="Honda Service">Honda Service</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'view', 'maintenance']) ?>" title="Maintenance">Maintenance</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'view', 'warranty']) ?>" title="Warranty">Warranty</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'view', 'genuine-parts']) ?>" title="Genuine Parts">Genuine Parts</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'view', 'engine-oil']) ?>" title="Engine Oil">Engine Oil</a></li>
-                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'view', 'accessory']) ?>" title="Accessory">Accessory</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'hondaService', 'honda-service']) ?>" title="Honda Service">Honda Service</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'maintenance', 'maintenance']) ?>" title="Maintenance">Maintenance</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'warranty', 'warranty']) ?>" title="Warranty">Warranty</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'genuineParts', 'genuine-parts']) ?>" title="Genuine Parts">Genuine Parts</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'engineOil', 'engine-oil']) ?>" title="Engine Oil">Engine Oil</a></li>
+                                                        <li><a href="<?= $this->Url->build(['controller' => 'Services', 'action' => 'accessory', 'accessory']) ?>" title="Accessory">Accessory</a></li>
                                                     </ul>
 
 

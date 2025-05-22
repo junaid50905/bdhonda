@@ -137,6 +137,19 @@ class UsersController extends AppController
     //     }
     // }
 
+
+    // public function login()
+    // {
+    //     $this->viewBuilder()->setLayout('login_layout');
+
+    //     if ($this->request->is('post')) {
+    //         if ($this->Auth->login()) {
+    //             return $this->redirect($this->Auth->redirectUrl());
+    //         }
+    //         $this->Session->setFlash('Invalid username or password, try again', 'flash_error');            
+    //     }
+    // }
+
     public function logout()
     {
         $result = $this->Authentication->getResult();

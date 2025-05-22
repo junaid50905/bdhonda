@@ -13,6 +13,23 @@ use Cake\ORM\TableRegistry;
  */
 class ServicesController extends AppController
 {
+
+    public function initialize(): void
+    {
+        parent::initialize();
+
+        $this->loadComponent('Authentication.Authentication');
+    }
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        // Allow public access to this action
+        $this->Authentication->addUnauthenticatedActions(['hondaService', 'maintenance', 'warranty', 'genuineParts', 'engineOil', 'accessory', 'ownersManual']);
+    }
+
+
     /**
      * hondaService
      */

@@ -23,6 +23,16 @@ class MediaController extends AppController
         parent::initialize();
         $this->PressRelease = TableRegistry::getTableLocator()->get('PressReleases');
         $this->Event = TableRegistry::getTableLocator()->get('Events');
+
+        $this->loadComponent('Authentication.Authentication');
+    }
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        // Allow public access to this action
+        $this->Authentication->addUnauthenticatedActions(['pressRelease', 'prDetails', 'events', 'eventDetails', 'gallery']);
     }
 
     /**
@@ -44,39 +54,6 @@ class MediaController extends AppController
 
     }
 
-    /**
-     * prDetails
-     */
-    // public function prDetails($id = null)
-    // {
-    //     $this->set('page_title', 'Press Release Details');
-    //     $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
-    //     $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
-
-    //     // Get the current URL and extract the ID from the last segment
-    //     // $uriSegments = explode('/', $this->request->getRequestTarget());
-
-    //     // $idjunaid = h(strip_tags(end($uriSegments)));
-
-    //     // Find the press release by ID
-    //     // $pressRelease = $this->PressReleases->find('all')
-    //     // ->where(['PressReleases.id' => $id])
-    //     // ->first();
-
-    //     $pressReleasesTable = TableRegistry::getTableLocator()->get('press_releases');
-    //     $pressRelease = $pressReleasesTable->find()
-    //         ->where([
-    //             'id' => $id,
-    //         ])
-    //         ->first();
-
-    //     dd($pressRelease);
-    //     if ($pressRelease) {
-    //         $this->set('prDetails', $pressRelease);
-    //     } else {
-    //         throw new NotFoundException(__('Press release not found'));
-    //     }
-    // }
     public function prDetails($id = null)
     {
 

@@ -28,7 +28,18 @@ class ProductsController extends AppController
         $this->Products = TableRegistry::getTableLocator()->get('products');
         $this->Features = TableRegistry::getTableLocator()->get('features');
         $this->loadComponent('Flash');
+        $this->loadComponent('Authentication.Authentication');
     }
+
+    public function beforeFilter(\Cake\Event\EventInterface $event)
+    {
+        parent::beforeFilter($event);
+
+        // Allow public access to this action
+        $this->Authentication->addUnauthenticatedActions(['index', 'view360', 'about', 'features', 'accessories', 'specifications', 'colors', 'price', 'onlineBookings']);
+    }
+
+
 
 
     public function index($slug = null)
@@ -115,88 +126,6 @@ class ProductsController extends AppController
         }
     }
 
-
-    /**
-     * accessories
-     */
-    // public function accessories($slug)
-    // {
-    //     // Set page title and meta details
-    //     $this->set('page_title', 'Bangladesh Honda Private Limited');
-    //     $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
-    //     $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
-
-    //     // Get the URI segments to extract the slug
-    //     $uriSegments = explode('/', $this->request->getUri()->getPath());
-    //     $slug = h(strip_tags($uriSegments[count($uriSegments) - 2]));
-    //     $this->set(compact('slug'));
-
-    //     $productTable = $this->getTableLocator()->get('Products');
-    //     $productDetails = $productTable->find()
-    //     ->where(['Products.slug' => $slug])
-    //     ->first();
-
-    //      echo '<pre>'; print_r($productTable); echo '</pre>';
-
-
-    //     if ($productDetails) {
-    //         // Set the product details and associated data to the view
-    //         $this->set(compact('productDetails'));
-    //     } else {
-    //         throw new NotFoundException(__('Product not found.'));
-    //     }
-
-    // }
-    // public function accessories($slug)
-    // {
-    //     // Set page title and meta information
-    //     $this->set('page_title', 'Bangladesh Honda Private Limited');
-    //     $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
-    //     $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
-
-    //     // Fetch the product based on the slug
-    //     $productTable = $this->getTableLocator()->get('Products');
-    //     $productDetails = $productTable->find()
-    //     ->where(['Products.slug' => $slug])
-    //     ->contain(['Accessories'])
-    //     ->first();
-
-    //     echo '<pre>';
-    //     print_r($productDetails);
-    //     echo '</pre>';
-
-
-    //     if ($productDetails) {
-    //         $this->set(compact('productDetails'));
-    //     } else {
-    //         throw new NotFoundException(__('Product not found.'));
-    //     }
-
-    // }
-    // public function accessories($slug)
-    // {
-    //     // Set page title and meta information
-    //     $this->set('page_title', 'Bangladesh Honda Private Limited');
-    //     $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
-    //     $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
-
-    //     // Fetch the product based on the slug
-    //     $productTable = $this->getTableLocator()->get('Products');
-    //     $productDetails = $productTable->find()
-    //         ->where(['Products.slug' => $slug])
-    //         ->first();
-
-    //     if ($productDetails) {
-    //         // Fetch the accessories related to the product
-    //         $accessoriesTable = $this->getTableLocator()->get('Accessories');
-    //         $accessories = $accessoriesTable->find()
-    //             ->where(['Accessories.product_id' => $productDetails->id])
-    //             ->all();
-    //         $this->set(compact('productDetails', 'accessories'));
-    //     } else {
-    //         throw new NotFoundException(__('Product not found.'));
-    //     }
-    // }
     public function accessories($slug)
     {
         // Set page title and meta information
@@ -319,7 +248,6 @@ class ProductsController extends AppController
         $this->set('meta_description', 'Honda is the world’s largest manufacturer of two Wheelers, Recognized the world over as the symbol of Honda two wheelers, the ‘Wings’ arrived in Bangladesh.');
         $this->set('meta_keywords', 'Honda, Bike, Two wheelers, Scooter, Stylish Bike');
 
-        dd('fsda');
     }
 
     /**
